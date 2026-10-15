@@ -7,6 +7,7 @@ import Portal6 from './pages/Portal6.jsx'
 import ChatRoom from './pages/ChatRoom.jsx'
 import Meetingroom from './pages/Meetingroom.jsx'
 import CompleteOrPendingWorkersProject from './pages/completeorpendingworkersproject.jsx'
+import WorkersProjectPortal4 from './pages/workersprojectportal4.jsx'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash || '#signin')
@@ -26,13 +27,14 @@ function App() {
   const isChatRoomRoute = normalizedPath === '#meeting-chat'
   const isMeetingRoomRoute = normalizedPath === '#meeting-room'
   const isWorkerProjectsRoute = ['#completeorpendingworkersproject', '#complete-or-pending-workers-project'].includes(normalizedPath)
+  const isWorkerUploadRoute = ['#workersprojectportal4', '#upload-workers-projects'].includes(normalizedPath)
   const isProjectsRoute = isPortal4Route || isPortal5Route || isPortal6Route || isWorkerProjectsRoute
 
   return (
-    <main className={`grid min-h-svh justify-items-center items-stretch p-[7px] max600:p-[5px] ${isProjectsRoute ? 'p-1' : ''}`}>
+    <main className={`grid min-h-svh justify-items-center items-stretch p-[7px] max600:p-[5px] ${isProjectsRoute ? 'p-1' : ''} ${isWorkerUploadRoute ? 'bg-canvas' : ''}`}>
       <div className={`relative flex min-h-[calc(100svh-14px)] w-[min(1440px,100%)] flex-col overflow-hidden rounded-[15px] bg-surface max600:min-h-[calc(100svh-10px)] max600:rounded-xl ${isProjectsRoute ? 'min-h-[calc(100svh-8px)]' : ''}`}>
-        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : currentPath} />
-        {isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
+        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : currentPath} pageTitle={isWorkerUploadRoute ? 'Upload Workers Projects' : undefined} />
+        {isWorkerUploadRoute ? <WorkersProjectPortal4 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
       </div>
     </main>
   )
