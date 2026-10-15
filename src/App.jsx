@@ -10,6 +10,8 @@ import CompleteOrPendingWorkersProject from './pages/completeorpendingworkerspro
 import WorkersProjectPortal3 from './pages/workersprojectportal3.jsx'
 import WorkersProjectPortal4 from './pages/workersprojectportal4.jsx'
 import WorkersComplaintNote from './pages/Workerscomplaintnote.jsx'
+import EditProfilePage from './pages/EditProfilePage.jsx'
+import Profile from './pages/Profile.jsx'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash || '#signin')
@@ -32,13 +34,15 @@ function App() {
   const isWorkerUploadRoute = ['#workersprojectportal4', '#upload-workers-projects'].includes(normalizedPath)
   const isWorkerUploadSuccessRoute = ['#workersprojectportal3', '#upload-workers-projects-success'].includes(normalizedPath)
   const isWorkerComplaintRoute = ['#workerscomplaintnote', '#workers-complaint-note'].includes(normalizedPath)
+  const isProfileRoute = normalizedPath === '#profile'
+  const isEditProfileRoute = normalizedPath === '#edit-profile'
   const isProjectsRoute = isPortal4Route || isPortal5Route || isPortal6Route || isWorkerProjectsRoute || isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute
 
   return (
     <main className={`grid min-h-svh justify-items-center items-stretch p-[7px] max600:p-[5px] ${isProjectsRoute ? 'p-1' : ''} ${isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute ? 'bg-canvas' : ''}`}>
       <div className={`relative flex min-h-[calc(100svh-14px)] w-[min(1440px,100%)] flex-col overflow-hidden rounded-[15px] bg-surface max600:min-h-[calc(100svh-10px)] max600:rounded-xl ${isProjectsRoute ? 'min-h-[calc(100svh-8px)]' : ''}`}>
-        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : currentPath} pageTitle={isWorkerComplaintRoute ? 'Workers Complaint Portal' : isWorkerUploadRoute || isWorkerUploadSuccessRoute ? 'Upload Workers Projects' : undefined} />
-        {isWorkerComplaintRoute ? <WorkersComplaintNote /> : isWorkerUploadSuccessRoute ? <WorkersProjectPortal3 /> : isWorkerUploadRoute ? <WorkersProjectPortal4 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
+        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : isProfileRoute || isEditProfileRoute ? '#profile' : currentPath} pageTitle={isWorkerComplaintRoute ? 'Workers Complaint Portal' : isWorkerUploadRoute || isWorkerUploadSuccessRoute ? 'Upload Workers Projects' : undefined} />
+        {isProfileRoute ? <Profile /> : isEditProfileRoute ? <EditProfilePage /> : isWorkerComplaintRoute ? <WorkersComplaintNote /> : isWorkerUploadSuccessRoute ? <WorkersProjectPortal3 /> : isWorkerUploadRoute ? <WorkersProjectPortal4 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
       </div>
     </main>
   )
