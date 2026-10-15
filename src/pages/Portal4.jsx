@@ -101,8 +101,8 @@ function Portal4() {
         <div className="min-w-0">
           <div className="mb-4 grid grid-cols-2 gap-[22px] max460:gap-[9px]" aria-label="Project totals">
             {[assignedProjectTotal, uploadedProjectTotal].map((total, index) => (
-              <article className={`grid h-[50px] min-w-0 grid-cols-[18px_minmax(0,1fr)] grid-rows-[17px_18px] content-center items-center gap-x-[7px] rounded border border-transparent bg-blue px-[13px] py-[5px] text-white max460:gap-x-[5px] max460:px-2 ${index === 0 ? 'portal4-stat-highlight border-2 border-[#ff322c]' : ''}`} key={index}>
-                <FileText className="row-span-2 size-[13px]" size={13} fill="white" stroke="var(--blue)" aria-hidden="true" />
+              <article className={`grid h-[50px] min-w-0 grid-cols-[18px_minmax(0,1fr)] grid-rows-[17px_18px] content-center items-center gap-x-[7px] rounded border border-transparent bg-blue px-[13px] py-[5px] text-white max460:gap-x-[5px] max460:px-2 ${index === 0 ? 'border-2 border-[#ff322c]' : ''}`} key={index}>
+                <FileText className="row-span-2 size-[13px]" size={13} fill="white" stroke="#1260f5" aria-hidden="true" />
                 <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] leading-[1.1] max460:text-[8px]">Total {index === 0 ? 'Assigned' : 'Uploaded'} projects</span>
                 <strong className="font-display text-[15px] font-extrabold leading-none">{total}</strong>
               </article>

@@ -146,10 +146,10 @@ function ChatRoom() {
                       {!isOutgoing && <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[7px] font-bold text-[#1c2c42]">{message.senderName}</strong>}
                       <time className="shrink-0">{message.time}</time>
                     </div>
-                    <div className={`min-w-0 overflow-wrap-anywhere rounded-[10px] px-3 py-[10px] text-[8px] leading-[1.45] ${isOutgoing ? 'bg-blue text-white' : 'bg-white text-[#647187]'} max480:px-[10px] max480:py-[9px] max480:text-[9px]`}>
+                    <div className={`min-w-0 wrap-anywhere rounded-[10px] px-3 py-[10px] text-[8px] leading-[1.45] ${isOutgoing ? 'bg-blue text-white' : 'bg-white text-[#647187]'} max480:px-[10px] max480:py-[9px] max480:text-[9px]`}>
                       {message.text && <p className="m-0 whitespace-pre-line">{message.text}</p>}
                       {message.attachmentName && (
-                        <span className={`mt-1 inline-flex max-w-full items-center gap-[5px] overflow-wrap-anywhere rounded px-[7px] py-[5px] ${isOutgoing ? 'bg-white/15' : 'bg-[#f1f5fc]'}`}><Paperclip size={12} aria-hidden="true" />{message.attachmentName}</span>
+                        <span className={`mt-1 inline-flex max-w-full items-center gap-[5px] wrap-anywhere rounded px-[7px] py-[5px] ${isOutgoing ? 'bg-white/15' : 'bg-[#f1f5fc]'}`}><Paperclip size={12} aria-hidden="true" />{message.attachmentName}</span>
                       )}
                     </div>
                   </div>
