@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
-import { ArrowDown, ArrowRight, BadgePlus, Check, CloudUpload, FileText, UserRound } from 'lucide-react'
+import { ArrowDown, Check, CloudUpload } from 'lucide-react'
+import { WorkerSupervisorPanel } from '../components/Shared.jsx'
 import { portalStyles as styles } from '../components/portalStyles.js'
 
 const MAX_FILE_SIZE = 100 * 1024 * 1024
@@ -27,7 +28,6 @@ function WorkersProjectPortal4() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [stagedUpload, setStagedUpload] = useState(null)
   const [notice, setNotice] = useState(null)
-  const [noteOpen, setNoteOpen] = useState(false)
 
   function handleDetailsChange(event) {
     const { name, value } = event.target
@@ -73,41 +73,9 @@ function WorkersProjectPortal4() {
   }
 
   return (
-    <section className={styles.workerUploadPage} aria-label="Upload Workers Projects">
+    <section className={`${styles.workerUploadPage} ${styles.workerUploadPageWidth}`} aria-label="Upload Workers Projects">
       <div className={styles.workerUploadGrid}>
-        <aside className={`${styles.supervisor} max620:min-h-0`} aria-labelledby="worker-upload-supervisor-title">
-          <h2 id="worker-upload-supervisor-title" className={styles.workerUploadSupervisorTitle}>Supervisor Panel</h2>
-          <div className={styles.workerUploadSupervisorProfile}>
-            <span className={styles.supervisorAvatar}>
-              <UserRound size={15} fill="white" aria-hidden="true" />
-            </span>
-            <span>
-              <strong className={styles.supervisorName}>Abimbola</strong>
-              <small className={styles.supervisorRole}>Supervisor</small>
-            </span>
-          </div>
-          <nav className={styles.workerUploadSupervisorActions} aria-label="Project navigation">
-            <a className={styles.workerUploadSupervisorAction} href="#portal5"><BadgePlus className={styles.supervisorActionIcon} size={17} aria-hidden="true" /><span>Assign New Project</span></a>
-            <a className={styles.workerUploadSupervisorAction} href="#portal5"><FileText className={styles.supervisorActionIcon} size={15} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></a>
-            <a className={styles.workerUploadSupervisorAction} href="#portal6"><FileText className={styles.supervisorActionIcon} size={15} fill="currentColor" aria-hidden="true" /><span>View Pending Projects</span></a>
-          </nav>
-          <section aria-labelledby="worker-upload-note-title">
-            <h3 id="worker-upload-note-title" className={styles.noteTitle}>Supervisor Note</h3>
-            <div className={`${styles.note} relative`} aria-label="Supervisor note">
-              <p className="sr-only">No supervisor note is currently displayed.</p>
-              <button
-                className={styles.workerUploadNoteButton}
-                type="button"
-                aria-label={noteOpen ? 'Close supervisor note details' : 'Open supervisor note details'}
-                aria-expanded={noteOpen}
-                onClick={() => setNoteOpen((open) => !open)}
-              >
-                <ArrowRight size={9} aria-hidden="true" />
-              </button>
-              {noteOpen && <span className={styles.workerUploadNotePopover} role="status">No supervisor note has been posted yet.</span>}
-            </div>
-          </section>
-        </aside>
+        <WorkerSupervisorPanel />
 
         <div className="min-w-0" aria-labelledby="worker-upload-title">
           <div className={styles.workerUploadForm} role="group" aria-label="Project details">
