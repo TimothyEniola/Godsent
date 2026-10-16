@@ -75,11 +75,11 @@ function CompleteOrPendingWorkersProject() {
       <header className={`${styles.heading} flex items-start justify-between`}>
         <div>
           <h1 id="worker-projects-title" className={styles.title}>Hello, <span className={styles.titleAccent}>Godsent!</span></h1>
-          <p className="mt-[3px] mb-0 text-[9px] text-[#73829a]">Track completed and pending worker projects.</p>
+          <p className="mt-1 mb-0 text-[14px] text-[#73829a]">Track completed and pending worker projects.</p>
         </div>
         <div className={styles.notificationWrap}>
           <button className={styles.notification} type="button" aria-label={notificationsOpen ? 'Hide notifications' : 'Show notifications, one unread'} aria-expanded={notificationsOpen} onClick={() => setNotificationsOpen((open) => !open)}>
-            <Bell size={15} fill="currentColor" aria-hidden="true" />
+            <Bell size={20} fill="currentColor" aria-hidden="true" />
             <span className={styles.notificationCount}>1</span>
           </button>
           {notificationsOpen && <div className={styles.notificationPopover} role="status">You have one new supervisor update.</div>}
@@ -90,28 +90,28 @@ function CompleteOrPendingWorkersProject() {
         <div className={styles.primary}>
           <div className={styles.statGrid} aria-label="Project totals">
             <article className={styles.statCard}>
-              <FileText className={styles.statIcon} size={13} fill="white" aria-hidden="true" />
+              <FileText className={styles.statIcon} size={22} fill="white" aria-hidden="true" />
               <span className={styles.statLabel}>Total Projects</span>
               <strong className={styles.statValue}>{projects.length}</strong>
             </article>
             <article className={styles.statCard}>
-              <FileText className={styles.statIcon} size={13} fill="white" aria-hidden="true" />
+              <FileText className={styles.statIcon} size={22} fill="white" aria-hidden="true" />
               <span className={styles.statLabel}>Pending Projects</span>
               <strong className={styles.statValue}>{pendingCount}</strong>
             </article>
-            <article className="col-span-2 grid h-[49px] min-w-0 grid-cols-[15px_minmax(0,1fr)] grid-rows-[14px_16px] content-center items-center gap-x-[6px] rounded bg-blue px-[11px] py-1 text-white max460:grid-cols-[13px_minmax(0,1fr)] max460:gap-x-[5px] max460:px-[7px]">
-              <Check className="row-span-2 size-[13px]" size={13} aria-hidden="true" />
+            <article className="col-span-2 grid h-[92px] min-w-0 grid-cols-[24px_minmax(0,1fr)] grid-rows-[20px_36px] content-center items-center gap-x-[14px] rounded-xl bg-blue px-6 py-2 text-white max460:grid-cols-[20px_minmax(0,1fr)] max460:gap-x-[10px] max460:px-4">
+              <Check className="row-span-2 size-[22px]" size={22} aria-hidden="true" />
               <span className={styles.statLabel}>Completed Projects</span>
               <strong className={styles.statValue}>{completedCount}</strong>
             </article>
           </div>
 
           <section className={styles.projectSection} aria-labelledby="worker-project-table-title">
-            <div className="mb-[9px] flex flex-wrap items-center justify-between gap-2 max460:mb-2">
-              <h2 id="worker-project-table-title" className="m-0 font-display text-[9px] font-extrabold uppercase leading-[1.2] text-[#061f45]">Worker Projects</h2>
-              <div className="flex items-center gap-[3px] rounded-[5px] bg-[#f1f6ff] p-[3px]" role="group" aria-label="Filter projects by status">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 max460:mb-3">
+              <h2 id="worker-project-table-title" className="m-0 font-display text-[14px] font-extrabold uppercase leading-[1.2] tracking-[.01em] text-[#061f45]">Worker Projects</h2>
+              <div className="flex items-center gap-1 rounded-lg bg-[#f1f6ff] p-1" role="group" aria-label="Filter projects by status">
                 {filters.map((filter) => (
-                  <button className={`min-h-[25px] cursor-pointer rounded px-[9px] text-[8px] font-semibold transition-colors duration-[160ms] focus-visible:outline-2 focus-visible:outline-blue/40 focus-visible:outline-offset-1 ${projectFilter === filter.id ? 'bg-blue text-white' : 'bg-transparent text-[#607089] hover:text-blue'}`} type="button" key={filter.id} aria-pressed={projectFilter === filter.id} onClick={() => showFilter(filter.id)}>
+                  <button className={`min-h-10 cursor-pointer rounded-md px-4 text-[13px] font-semibold transition-colors duration-[160ms] focus-visible:outline-2 focus-visible:outline-blue/40 focus-visible:outline-offset-1 ${projectFilter === filter.id ? 'bg-blue text-white' : 'bg-transparent text-[#607089] hover:text-blue'}`} type="button" key={filter.id} aria-pressed={projectFilter === filter.id} onClick={() => showFilter(filter.id)}>
                     {filter.label}
                   </button>
                 ))}
@@ -136,7 +136,7 @@ function CompleteOrPendingWorkersProject() {
                       <td className={styles.tableCell}>{project.learners} Learners</td>
                       <td className={styles.tableCell}>{project.date}</td>
                       <td className={styles.tableCell}>
-                        <span className={`inline-flex min-h-[19px] min-w-[55px] items-center justify-center rounded px-[7px] text-[8px] leading-none text-white ${project.status === 'pending' ? 'bg-portal-status' : 'bg-blue'}`}>
+                        <span className={`inline-flex min-h-[34px] min-w-[92px] items-center justify-center rounded-full px-4 text-[13px] font-semibold leading-none text-white ${project.status === 'pending' ? 'bg-portal-status' : 'bg-blue'}`}>
                           {project.status === 'pending' ? 'Pending' : 'Completed'}
                         </span>
                       </td>
@@ -150,7 +150,7 @@ function CompleteOrPendingWorkersProject() {
           </section>
 
           <div className={`${styles.uploadBox} max620:mt-[26px] max460:gap-2 max460:px-2`}>
-            <CloudUpload className={styles.uploadIcon} size={25} strokeWidth={1.8} aria-hidden="true" />
+            <CloudUpload className={styles.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" />
             <div className={styles.uploadCopy}>
               <strong className={styles.uploadTitle}>{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong>
               <span className={styles.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span>
@@ -159,21 +159,21 @@ function CompleteOrPendingWorkersProject() {
             <button className={styles.chooseFile} type="button" onClick={handleUpload}>{selectedFile ? 'Upload File' : 'Choose File'}</button>
           </div>
 
-          {notice && <p className={`${styles.notice} ${notice.type === 'error' ? styles.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={13} aria-hidden="true" />}{notice.message}</p>}
+          {notice && <p className={`${styles.notice} ${notice.type === 'error' ? styles.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={18} aria-hidden="true" />}{notice.message}</p>}
 
-          <a className={styles.contact} href="mailto:supervisor@godsent.com?subject=Worker%20project%20status%20support"><Info className={styles.contactIcon} size={13} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={styles.contactLink}>contact your supervisor</strong></span></a>
+          <a className={styles.contact} href="mailto:supervisor@godsent.com?subject=Worker%20project%20status%20support"><Info className={styles.contactIcon} size={18} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={styles.contactLink}>contact your supervisor</strong></span></a>
         </div>
 
         <aside className={`${styles.supervisor} max620:min-h-0`} aria-labelledby="worker-supervisor-title">
           <h2 id="worker-supervisor-title" className={styles.supervisorTitle}>Supervisor Panel</h2>
           <div className={styles.supervisorProfile}>
-            <span className={styles.supervisorAvatar}><UserRound size={15} fill="white" aria-hidden="true" /></span>
+            <span className={styles.supervisorAvatar}><UserRound size={22} fill="white" aria-hidden="true" /></span>
             <span><strong className={styles.supervisorName}>Abimbola</strong><small className={styles.supervisorRole}>Supervisor</small></span>
           </div>
           <nav className={styles.supervisorActions} aria-label="Supervisor project actions">
-            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'all'} onClick={() => showFilter('all')}><FileText className={styles.supervisorActionIcon} size={15} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></button>
-            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'pending'} onClick={() => showFilter('pending')}><FileText className={styles.supervisorActionIcon} size={15} aria-hidden="true" /><span>View Pending Projects</span></button>
-            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'completed'} onClick={() => showFilter('completed')}><Check className={styles.supervisorActionIcon} size={15} aria-hidden="true" /><span>View Completed Projects</span></button>
+            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'all'} onClick={() => showFilter('all')}><FileText className={styles.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></button>
+            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'pending'} onClick={() => showFilter('pending')}><FileText className={styles.supervisorActionIcon} size={18} aria-hidden="true" /><span>View Pending Projects</span></button>
+            <button className={styles.supervisorAction} type="button" aria-pressed={projectFilter === 'completed'} onClick={() => showFilter('completed')}><Check className={styles.supervisorActionIcon} size={18} aria-hidden="true" /><span>View Completed Projects</span></button>
           </nav>
           <section aria-labelledby="worker-supervisor-note-title">
             <h3 id="worker-supervisor-note-title" className={styles.noteTitle}>Supervisor Note</h3>
@@ -182,7 +182,7 @@ function CompleteOrPendingWorkersProject() {
         </aside>
       </div>
 
-      <button className={styles.scrollCue} type="button" aria-label="Scroll to the bottom of the projects page" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}><ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" /></button>
+      <button className={styles.scrollCue} type="button" aria-label="Scroll to the bottom of the projects page" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}><ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" /></button>
     </section>
   )
 }

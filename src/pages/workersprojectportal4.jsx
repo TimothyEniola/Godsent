@@ -97,7 +97,7 @@ function WorkersProjectPortal4() {
           </div>
 
           <div className={styles.workerUploadBox}>
-            <CloudUpload className="shrink-0" size={25} strokeWidth={1.8} aria-hidden="true" />
+            <CloudUpload className="shrink-0" size={36} strokeWidth={1.8} aria-hidden="true" />
             <div className={styles.uploadCopy}>
               <strong className={styles.uploadTitle}>{selectedFile ? selectedFile.name : stagedUpload ? `Staged: ${stagedUpload.file.name}` : 'Upload Completed Project'}</strong>
               <span className={styles.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span>
@@ -117,7 +117,7 @@ function WorkersProjectPortal4() {
 
           {notice && (
             <p className={`${styles.notice} ${notice.type === 'error' ? styles.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>
-              {notice.type !== 'error' && <Check className="shrink-0" size={13} aria-hidden="true" />}
+              {notice.type !== 'error' && <Check className="shrink-0" size={18} aria-hidden="true" />}
               {notice.message}
             </p>
           )}
@@ -130,7 +130,7 @@ function WorkersProjectPortal4() {
         aria-label="Scroll to the bottom of the page"
         onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
       >
-        <ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
+        <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </section>
   )

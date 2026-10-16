@@ -24,7 +24,7 @@ function WorkersComplaintNote() {
       </div>
 
       <button className={styles.workerUploadScrollCue} type="button" aria-label="Scroll to the bottom of the page" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
-        <ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
+        <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </section>
   )

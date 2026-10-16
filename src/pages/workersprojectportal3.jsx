@@ -118,13 +118,13 @@ function WorkersProjectPortal3() {
           </div>
 
           <div className={styles.workerUploadSuccessBox}>
-            <FileArchive className="shrink-0" size={20} fill="currentColor" aria-hidden="true" />
+            <FileArchive className="shrink-0" size={30} fill="currentColor" aria-hidden="true" />
             <div className={styles.workerUploadFileMeta}>
               <span className={styles.workerUploadFileRow}>
                 <strong className={styles.workerUploadFileName}>{fileToDisplay ? `${fileToDisplay.name} (${formatFileSize(fileToDisplay.size)})` : 'Choose a project file'}</strong>
                 {fileToDisplay && (
                   <button className={styles.workerUploadRemoveButton} type="button" aria-label={`Remove ${fileToDisplay.name}`} onClick={handleRemoveFile}>
-                    <X size={10} aria-hidden="true" />
+                    <X size={16} aria-hidden="true" />
                   </button>
                 )}
               </span>
@@ -139,7 +139,7 @@ function WorkersProjectPortal3() {
           ) : isUploaded ? (
             <p className={styles.workerUploadSuccessNotice} role="status">
               <span>Project uploaded and <strong className="font-semibold text-blue">successfully</strong></span>
-              <CircleCheck className="shrink-0 text-success" size={14} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" />
+              <CircleCheck className="shrink-0 text-success" size={20} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" />
               {!localPreviewSent && <span className="sr-only">This is a local preview; no server upload was made.</span>}
             </p>
           ) : null}
@@ -149,7 +149,7 @@ function WorkersProjectPortal3() {
       </div>
 
       <button className={styles.workerUploadScrollCue} type="button" aria-label="Scroll to the bottom of the page" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
-        <ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
+        <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </section>
   )
