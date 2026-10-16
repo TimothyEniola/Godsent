@@ -1,7 +1,6 @@
 
 import React from "react";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
 
 const ProjectUploadSuccess = () => {
   return (
@@ -65,8 +64,8 @@ const ProjectUploadSuccess = () => {
 
         {/* Bottom Project Details Link */}
         <div className="relative z-10 mt-auto flex w-full max-w-5xl flex-col items-start justify-between gap-5 pt-16 sm:flex-row sm:items-center sm:pt-16">
-          <Link
-            to="/project-details"
+          <a
+            href="#project-portal"
             className="inline-flex items-center gap-2 text-left text-xs leading-6 transition-colors hover:text-[#1260FF] sm:text-sm"
           >
             <svg
@@ -83,7 +82,7 @@ const ProjectUploadSuccess = () => {
                 to edit your project details
               </span>
             </span>
-          </Link>
+          </a>
 
           {/* Scroll to Top */}
           <button
