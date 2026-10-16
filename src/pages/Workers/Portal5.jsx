@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { ArrowDown, BadgePlus, Bell, Check, Clock3, CloudUpload, FileText, Info, UserRound } from 'lucide-react'
-import { portalStyles as s } from '../components/portalStyles.js'
+import { portalStyles as s } from '../../components/portalStyles.js'
 
 const MAX_FILE_SIZE = 100 * 1024 * 1024
 const ACCEPTED_EXTENSIONS = new Set(['pdf', 'docx', 'zip', 'jpg', 'jpeg', 'png'])

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, BriefcaseBusiness, Camera, Globe2, Info, Mail, MapPin, Phone, UserRound } from 'lucide-react'
-import { portalStyles as styles } from '../components/portalStyles.js'
-import { loadProfile, normalizeProfile, PROFILE_FIELDS, saveProfile } from '../utils/profileStorage.js'
+import { portalStyles as styles } from '../../components/portalStyles.js'
+import { loadProfile, normalizeProfile, PROFILE_FIELDS, saveProfile } from '../../utils/profileStorage.js'
 
 const MAX_PHOTO_SIZE = 5 * 1024 * 1024
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowDown } from 'lucide-react'
-import { WorkerSupervisorPanel } from '../components/Shared.jsx'
-import { portalStyles as styles } from '../components/portalStyles.js'
+import { WorkerSupervisorPanel } from '../../components/Shared.jsx'
+import { portalStyles as styles } from '../../components/portalStyles.js'
 
 function WorkersComplaintNote() {
   const [complaint, setComplaint] = useState('')

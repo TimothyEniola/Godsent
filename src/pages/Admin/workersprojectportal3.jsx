@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { ArrowDown, CircleCheck, FileArchive, X } from 'lucide-react'
-import { WorkerSupervisorPanel } from '../components/Shared.jsx'
-import { portalStyles as styles } from '../components/portalStyles.js'
+import { WorkerSupervisorPanel } from '../../components/Shared.jsx'
+import { portalStyles as styles } from '../../components/portalStyles.js'
 
 const MAX_FILE_SIZE = 100 * 1024 * 1024
 const ACCEPTED_EXTENSIONS = new Set(['pdf', 'docx', 'zip', 'jpg', 'jpeg', 'png'])

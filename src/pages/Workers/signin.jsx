@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { ArrowDown, Eye, EyeOff, Info, LockKeyhole, Mail } from 'lucide-react'
-import portalIllustration from '../assets/signin-portal-illustration.svg'
+import portalIllustration from '../../assets/signin-portal-illustration.svg'
 
 function SignIn() {
   const formRef = useRef(null)
