@@ -71,15 +71,15 @@ function Portal5() {
       <header className={s.heading}>
         <h1 id="portal5-title" className={s.title}>Hello, <span className={s.titleAccent}>Godsent!</span></h1>
         <div className={s.notificationWrap}>
-          <button className={s.notification} type="button" aria-label={notificationsOpen ? 'Hide notifications' : 'Show notifications, one unread'} aria-expanded={notificationsOpen} onClick={() => setNotificationsOpen((open) => !open)}><Bell size={15} fill="currentColor" aria-hidden="true" /><span className={s.notificationCount}>1</span></button>
+          <button className={s.notification} type="button" aria-label={notificationsOpen ? 'Hide notifications' : 'Show notifications, one unread'} aria-expanded={notificationsOpen} onClick={() => setNotificationsOpen((open) => !open)}><Bell size={20} fill="currentColor" aria-hidden="true" /><span className={s.notificationCount}>1</span></button>
           {notificationsOpen && <div className={s.notificationPopover} role="status">You have one new supervisor update.</div>}
         </div>
       </header>
       <div className={s.mainGrid}>
         <div className={s.primary}>
           <div className={s.statGrid} aria-label="Project totals">
-            <article className={s.statCard}><FileText className={s.statIcon} size={13} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Assigned projects</span><strong className={s.statValue}>{projects.length}</strong></article>
-            <article className={s.statCard}><FileText className={s.statIcon} size={13} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Pending projects</span><strong className={s.statValue}>{pendingCount}</strong></article>
+            <article className={s.statCard}><FileText className={s.statIcon} size={22} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Assigned projects</span><strong className={s.statValue}>{projects.length}</strong></article>
+            <article className={s.statCard}><FileText className={s.statIcon} size={22} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Pending projects</span><strong className={s.statValue}>{pendingCount}</strong></article>
           </div>
           <section className={s.projectSection} aria-labelledby="portal5-projects-title">
             <h2 id="portal5-projects-title" className={s.sectionTitle}>{projectFilter === 'pending' ? 'Projects Pending' : 'Projects Assigned'}</h2>
@@ -99,24 +99,24 @@ function Portal5() {
             <button className={s.assignButton} type="submit">Add Project</button>
             <button className={s.cancelButton} type="button" onClick={() => { setAssignFormOpen(false); setNewProjectName('') }}>Cancel</button>
           </form>}
-          <div className={s.uploadBox}><CloudUpload className={s.uploadIcon} size={25} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong><span className={s.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span></div>
+          <div className={s.uploadBox}><CloudUpload className={s.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong><span className={s.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span></div>
             <input ref={fileInputRef} className={s.fileInput} type="file" accept=".pdf,.docx,.zip,.jpg,.jpeg,.png" onChange={handleFileChange} aria-label="Choose a completed project file" /><button className={s.chooseFile} type="button" onClick={handleUpload}>{selectedFile ? 'Upload File' : 'Choose File'}</button>
           </div>
-          {notice && <p className={`${s.notice} ${notice.type === 'error' ? s.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={13} aria-hidden="true" />}{notice.message}</p>}
-          <a className={s.contact} href="mailto:supervisor@godsent.com?subject=Assigned%20projects%20support"><Info className={s.contactIcon} size={13} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={s.contactLink}>contact your supervisor</strong></span></a>
+          {notice && <p className={`${s.notice} ${notice.type === 'error' ? s.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={18} aria-hidden="true" />}{notice.message}</p>}
+          <a className={s.contact} href="mailto:supervisor@godsent.com?subject=Assigned%20projects%20support"><Info className={s.contactIcon} size={18} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={s.contactLink}>contact your supervisor</strong></span></a>
         </div>
         <aside className={s.supervisor} aria-labelledby="portal5-supervisor-title">
           <h2 id="portal5-supervisor-title" className={s.supervisorTitle}>Supervisor Panel</h2>
-          <div className={s.supervisorProfile}><span className={s.supervisorAvatar}><UserRound size={15} fill="white" aria-hidden="true" /></span><span><strong className={s.supervisorName}>Abimbola</strong><small className={s.supervisorRole}>Supervisor</small></span></div>
+          <div className={s.supervisorProfile}><span className={s.supervisorAvatar}><UserRound size={22} fill="white" aria-hidden="true" /></span><span><strong className={s.supervisorName}>Abimbola</strong><small className={s.supervisorRole}>Supervisor</small></span></div>
           <nav className={s.supervisorActions} aria-label="Supervisor project actions">
-            <button className={s.supervisorAction} type="button" aria-expanded={assignFormOpen} onClick={openAssignForm}><BadgePlus className={s.supervisorActionIcon} size={16} aria-hidden="true" /><span>Assign New Project</span></button>
-            <button className={s.supervisorAction} type="button" aria-pressed={projectFilter === 'all'} onClick={() => setFilter('all', 'Showing all assigned projects.')}><FileText className={s.supervisorActionIcon} size={15} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></button>
-            <button className={s.supervisorAction} type="button" aria-pressed={projectFilter === 'pending'} onClick={() => setFilter('pending', 'Showing pending projects.')}><Clock3 className={s.supervisorActionIcon} size={15} aria-hidden="true" /><span>View Pending Projects</span></button>
+            <button className={s.supervisorAction} type="button" aria-expanded={assignFormOpen} onClick={openAssignForm}><BadgePlus className={s.supervisorActionIcon} size={20} aria-hidden="true" /><span>Assign New Project</span></button>
+            <button className={s.supervisorAction} type="button" aria-pressed={projectFilter === 'all'} onClick={() => setFilter('all', 'Showing all assigned projects.')}><FileText className={s.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></button>
+            <button className={s.supervisorAction} type="button" aria-pressed={projectFilter === 'pending'} onClick={() => setFilter('pending', 'Showing pending projects.')}><Clock3 className={s.supervisorActionIcon} size={18} aria-hidden="true" /><span>View Pending Projects</span></button>
           </nav>
           <section aria-labelledby="portal5-note-title"><h3 id="portal5-note-title" className={s.noteTitle}>Supervisor Note</h3><div className={`${s.note} max620:min-h-[60px]`} aria-label="Supervisor note, currently blank" /></section>
         </aside>
       </div>
-      <button className={s.scrollCue} type="button" aria-label="Scroll to the bottom of the portal" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}><ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" /></button>
+      <button className={s.scrollCue} type="button" aria-label="Scroll to the bottom of the portal" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}><ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" /></button>
     </section>
   )
 }

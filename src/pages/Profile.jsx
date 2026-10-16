@@ -70,7 +70,7 @@ function Profile() {
           title="Choose a profile photo"
           onClick={() => photoInputRef.current?.click()}
         >
-          {avatarUrl ? <img className={styles.profileAvatarImage} src={avatarUrl} alt="Local profile photo preview" /> : <Camera size={23} fill="currentColor" strokeWidth={2.2} aria-hidden="true" />}
+          {avatarUrl ? <img className={styles.profileAvatarImage} src={avatarUrl} alt="Local profile photo preview" /> : <Camera size={34} fill="currentColor" strokeWidth={2.2} aria-hidden="true" />}
         </button>
       </header>
 
@@ -79,7 +79,7 @@ function Profile() {
           <div className={styles.profileField} key={key}>
             <dt className={styles.profileLabel}>{label}</dt>
             <dd className={styles.profileValue}>
-              <Icon className={styles.profileFieldIcon} size={14} fill={key === 'nationality' ? 'currentColor' : 'none'} aria-hidden="true" />
+              <Icon className={styles.profileFieldIcon} size={20} fill={key === 'nationality' ? 'currentColor' : 'none'} aria-hidden="true" />
               <span className={styles.profileFieldText}>{profileState.profile[key] || '—'}</span>
             </dd>
           </div>
@@ -88,13 +88,13 @@ function Profile() {
 
       <footer className={styles.profileFooter}>
         <p className={styles.profileEditPrompt}>
-          <Info className="shrink-0 text-[#1546af]" size={13} fill="currentColor" stroke="white" aria-hidden="true" />
+          <Info className="shrink-0 text-[#1546af]" size={18} fill="currentColor" stroke="white" aria-hidden="true" />
           <span>Click here to <a className={styles.profileEditLink} href="#edit-profile">edit profile</a></span>
         </p>
         {profileState.isSaved ? (
           <p className={styles.profileSaved} role="status">
             <span>Profile <strong>saved</strong></span>
-            <CircleCheck size={14} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" />
+            <CircleCheck size={20} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" />
             <span className="sr-only">This profile is saved in this browser preview only.</span>
           </p>
         ) : (
@@ -103,7 +103,7 @@ function Profile() {
       </footer>
       {photoError && <p className={styles.profilePhotoError} role="alert">{photoError}</p>}
       <button className={styles.profileScrollCue} type="button" aria-label="Scroll to the bottom of the profile" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
-        <ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
+        <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </section>
   )

@@ -108,7 +108,7 @@ function EditProfilePage() {
           title="Choose a profile photo"
           onClick={() => photoInputRef.current?.click()}
         >
-          {avatarUrl ? <img className={styles.profileAvatarImage} src={avatarUrl} alt="Local profile photo preview" /> : <Camera size={23} fill="currentColor" strokeWidth={2.2} aria-hidden="true" />}
+          {avatarUrl ? <img className={styles.profileAvatarImage} src={avatarUrl} alt="Local profile photo preview" /> : <Camera size={34} fill="currentColor" strokeWidth={2.2} aria-hidden="true" />}
         </button>
       </header>
 
@@ -118,7 +118,7 @@ function EditProfilePage() {
             <label className={styles.profileField} htmlFor={`edit-profile-${key}`} key={key}>
               <span className={styles.profileLabel}>{label}</span>
               <span className={styles.editProfileControl}>
-                <Icon className={styles.profileFieldIcon} size={14} fill={key === 'nationality' ? 'currentColor' : 'none'} aria-hidden="true" />
+                <Icon className={styles.profileFieldIcon} size={20} fill={key === 'nationality' ? 'currentColor' : 'none'} aria-hidden="true" />
                 <input
                   className={styles.editProfileControlInput}
                   autoComplete={autoComplete}
@@ -138,7 +138,7 @@ function EditProfilePage() {
         <footer className={styles.profileFooter}>
           <div className={styles.editProfileActionGroup}>
             <button className={styles.editProfileSavePrompt} type="submit">
-              <Info className="shrink-0 text-[#1546af]" size={13} fill="currentColor" stroke="white" aria-hidden="true" />
+              <Info className="shrink-0 text-[#1546af]" size={18} fill="currentColor" stroke="white" aria-hidden="true" />
               <span>Click here to <strong className={styles.profileEditLink}>save</strong></span>
             </button>
             {isDirty && <button className={styles.editProfileDiscardLink} type="button" onClick={handleDiscard}>Discard changes</button>}
@@ -151,7 +151,7 @@ function EditProfilePage() {
       {photoError && <p className={styles.profilePhotoError} role="alert">{photoError}</p>}
 
       <button className={styles.profileScrollCue} type="button" aria-label="Scroll to the bottom of the profile" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
-        <ArrowDown size={19} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
+        <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </section>
   )
