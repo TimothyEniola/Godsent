@@ -11,6 +11,7 @@ import WorkersProjectPortal3 from './pages/Admin/workersprojectportal3.jsx'
 import WorkersComplaintNote from './pages/Admin/Workerscomplaintnote.jsx'
 import EditProfilePage from './pages/Workers/EditProfilePage.jsx'
 import Profile from './pages/Workers/Profile.jsx'
+import PaymentStatus from './pages/Workers/PaymentStatus.jsx'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash || '#signin')
@@ -35,13 +36,14 @@ function App() {
   const isWorkerComplaintRoute = ['#workerscomplaintnote', '#workers-complaint-note'].includes(normalizedPath)
   const isProfileRoute = normalizedPath === '#profile'
   const isEditProfileRoute = normalizedPath === '#edit-profile'
+  const isPaymentStatusRoute = normalizedPath === '#payment-status'
   const isProjectsRoute = isPortal4Route || isPortal5Route || isPortal6Route || isWorkerProjectsRoute || isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute
 
   return (
     <main className={`grid min-h-svh justify-items-center items-stretch p-[12px] max600:p-[8px] ${isProjectsRoute ? 'p-2' : ''} ${isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute ? 'bg-canvas' : ''}`}>
       <div className={`relative flex min-h-[calc(100svh-24px)] w-[min(1440px,100%)] flex-col overflow-hidden rounded-2xl bg-surface max600:min-h-[calc(100svh-16px)] max600:rounded-xl ${isProjectsRoute ? 'min-h-[calc(100svh-16px)]' : ''}`}>
         <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : isProfileRoute || isEditProfileRoute ? '#profile' : currentPath} pageTitle={isWorkerComplaintRoute ? 'Workers Complaint Portal' : isWorkerUploadRoute || isWorkerUploadSuccessRoute ? 'Upload Workers Projects' : undefined} />
-        {isProfileRoute ? <Profile /> : isEditProfileRoute ? <EditProfilePage /> : isWorkerComplaintRoute ? <WorkersComplaintNote /> : isWorkerUploadSuccessRoute || isWorkerUploadRoute ? <WorkersProjectPortal3 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
+        {isPaymentStatusRoute ? <PaymentStatus /> : isProfileRoute ? <Profile /> : isEditProfileRoute ? <EditProfilePage /> : isWorkerComplaintRoute ? <WorkersComplaintNote /> : isWorkerUploadSuccessRoute || isWorkerUploadRoute ? <WorkersProjectPortal3 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
       </div>
     </main>
   )
