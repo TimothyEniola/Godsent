@@ -41,7 +41,7 @@ function SignIn() {
         {statusMessage && <p className="mt-4 mb-0 text-[14px] text-success" role="status">{statusMessage}</p>}
       </div>
 
-      <div className="flex min-w-0 items-center justify-center max600:order-[-1] max600:mx-auto max600:mb-2 max600:h-auto max600:max-h-[230px] max600:w-[min(100%,380px)] max600:overflow-hidden max380:max-h-[188px]">
+      <div className="flex min-w-0 items-center justify-center max600:hidden">
         <img className="block max-h-[380px] w-full max-w-[520px] translate-x-[4%] scale-[1.2] object-contain min1100:max-h-[480px] max600:max-h-[230px] max600:translate-x-0 max600:scale-100 max380:max-h-[188px]" src={portalIllustration} alt="A person using a phone beside secure account documents" />
       </div>
 
