@@ -1,110 +1,57 @@
+import { CircleCheck, FileArchive } from 'lucide-react'
+import { readProjectUploads } from '../../utils/projectUploads.js'
 
-import React from "react";
-import Navbar from "../../components/Navbar";
+function getReturnPath() {
+  const params = new URLSearchParams(window.location.hash.split('?')[1] || '')
+  const returnTo = params.get('returnTo')
+  return ['portal5', 'portal6'].includes(returnTo) ? `#${returnTo}` : '#project-portal'
+}
 
-const ProjectUploadSuccess = () => {
+function Pus() {
+  const returnPath = getReturnPath()
+  let latestUpload = null
+  let loadError = ''
+
+  try {
+    latestUpload = readProjectUploads()[0] || null
+  } catch (error) {
+    loadError = error instanceof Error ? error.message : 'The saved submission could not be read.'
+  }
+
   return (
-    <div className="min-h-screen bg-white text-[#1E293B]">
-      {/* Existing Navbar */}
-      <Navbar />
-
-      {/* Main Success Section */}
-      <main className="relative flex min-h-[calc(100vh-80px)] flex-col items-center overflow-hidden px-4 pb-10 pt-7 sm:pt-10">
-        {/* Left Side Accent */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-7 hidden h-60 w-[9%] bg-[#1260FF] sm:block lg:top-8 lg:h-64 lg:w-[9.2%]"
-        >
-          <div className="absolute right-0 top-0 h-full w-4 bg-black" />
-        </div>
-
-        {/* Right Side Accent */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-7 hidden h-60 w-[9%] bg-[#1260FF] sm:block lg:top-8 lg:h-64 lg:w-[9.2%]"
-        >
-          <div className="absolute left-0 top-0 h-full w-4 bg-black" />
-        </div>
-
-        {/* Content */}
-        <section className="relative z-10 flex w-full max-w-xl flex-col items-center text-center">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-[28px]">
-            Hello, <span className="text-[#1260FF]">Godsent!</span>
-          </h1>
-
-          {/* Green Success Icon */}
-          <div
-            className="mt-6 flex h-[88px] w-[88px] items-center justify-center rounded-full bg-[#45D17D] sm:mt-6 sm:h-[96px] sm:w-[96px]"
-            role="img"
-            aria-label="Success"
-          >
-            <svg
-              viewBox="0 0 64 64"
-              className="h-[68px] w-[68px] sm:h-[76px] sm:w-[76px]"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 33L25 46L53 17"
-                stroke="white"
-                strokeWidth="8"
-                strokeLinecap="square"
-                strokeLinejoin="miter"
-              />
-            </svg>
+    <section className="relative mx-auto flex min-h-[max(440px,calc(100svh-170px))] w-[min(92%,1000px)] flex-1 flex-col items-center justify-center px-4 pb-14 pt-6 text-center text-[#203247] max620:min-h-[max(400px,calc(100svh-140px))] max620:w-[90%] max460:w-[94%]" aria-labelledby="pus-title">
+      {loadError ? (
+        <>
+          <h1 id="pus-title" className="m-0 font-display text-[28px] font-extrabold text-[#203247] max460:text-2xl">Submission status unavailable</h1>
+          <p className="mt-4 max-w-lg text-[14px] leading-[1.6] text-[#bb3441]" role="alert">{loadError}</p>
+        </>
+      ) : latestUpload ? (
+        <>
+          <h1 id="pus-title" className="m-0 font-display text-[30px] font-extrabold leading-[1.12] tracking-[-.05em] max460:text-2xl">Hello, <span className="text-blue">Godsent!</span></h1>
+          <CircleCheck className="mt-7 text-success" size={82} strokeWidth={1.8} aria-hidden="true" />
+          <div className="mt-6 w-full max-w-md rounded-xl bg-blue px-5 py-5 text-white shadow-sm">
+            <h2 className="m-0 text-[16px] font-bold">Project submission saved</h2>
+            <p className="mt-2 mb-0 text-[13px] leading-[1.5] text-white/90">{latestUpload.name} was added to your project portal.</p>
           </div>
-
-          {/* Success Message */}
-          <div className="mt-8 flex min-h-[68px] w-full max-w-[293px] items-center justify-center rounded-xl bg-[#1260FF] px-4 py-5 text-white shadow-sm sm:mt-[34px] sm:min-h-[67px]">
-            <p className="text-sm font-semibold sm:text-base">
-              Project Uploaded Successfully!
-            </p>
+          <div className="mt-5 flex w-full max-w-md items-center gap-3 rounded-xl bg-field px-4 py-4 text-left">
+            <FileArchive className="shrink-0 text-blue" size={24} aria-hidden="true" />
+            <div className="min-w-0">
+              <p className="m-0 overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-semibold">{latestUpload.fileName}</p>
+              <p className="mt-1 mb-0 text-[12px] text-[#73829a]">{latestUpload.learners} learners · Uploaded {latestUpload.date}</p>
+            </div>
           </div>
-        </section>
+          <p className="mt-4 mb-0 max-w-lg text-[12px] leading-[1.5] text-[#73829a]">This preview saves the submission details in this browser. The document itself has not been sent to an admin server.</p>
+        </>
+      ) : (
+        <>
+          <h1 id="pus-title" className="m-0 font-display text-[28px] font-extrabold text-[#203247] max460:text-2xl">No recent submission</h1>
+          <p className="mt-3 text-[14px] text-[#73829a]">Choose a project file and complete its details before sending.</p>
+        </>
+      )}
 
-        {/* Bottom Project Details Link */}
-        <div className="relative z-10 mt-auto flex w-full max-w-5xl flex-col items-start justify-between gap-5 pt-16 sm:flex-row sm:items-center sm:pt-16">
-          <a
-            href="#project-portal"
-            className="inline-flex items-center gap-2 text-left text-xs leading-6 transition-colors hover:text-[#1260FF] sm:text-sm"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4 shrink-0 fill-[#1745A5]"
-              aria-hidden="true"
-            >
-              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z" />
-            </svg>
+      <a className="mt-8 inline-flex min-h-11 items-center justify-center rounded-lg bg-blue px-5 text-[14px] font-bold text-white transition-colors hover:bg-blue-dark" href={returnPath}>Return to Project Portal</a>
+    </section>
+  )
+}
 
-            <span>
-              Click here{" "}
-              <span className="text-[#1260FF]">
-                to edit your project details
-              </span>
-            </span>
-          </a>
-
-          {/* Scroll to Top */}
-          <button
-            type="button"
-            onClick={() =>
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            }
-            aria-label="Scroll to top"
-            className="self-end p-1 text-[#404040] transition-colors hover:text-[#1260FF] sm:self-auto"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-6 w-6 fill-current"
-              aria-hidden="true"
-            >
-              <path d="M12 4 3 13h5v7h8v-7h5z" />
-            </svg>
-          </button>
-        </div>
-      </main>
-    </div>
-  );
-};
-
-export default ProjectUploadSuccess;
+export default Pus

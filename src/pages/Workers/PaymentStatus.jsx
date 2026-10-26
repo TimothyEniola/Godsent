@@ -11,7 +11,7 @@ function PaymentStatus() {
   const [selectedMonth, setSelectedMonth] = useState('January')
 
   return (
-    <main className="relative mx-auto mt-[-7px] flex w-[min(91%,1160px)] flex-1 flex-col pb-8 text-ink max600:w-[92%] max600:pb-6 print:w-full print:pb-0" aria-labelledby="payment-status-title">
+    <main className="relative mx-auto mt-[-px] flex w-[min(91%,1160px)] flex-1 flex-col pb-8 text-ink max600:w-[92%] max600:pb-6 print:w-full print:pb-0" aria-labelledby="payment-status-title">
       <h1 id="payment-status-title" className="m-0 mb-[8px] text-center font-display text-[24px] font-extrabold leading-[1.25] tracking-[-.05em] text-[#203247]">
         Payment <span className="text-blue">Status</span>
       </h1>

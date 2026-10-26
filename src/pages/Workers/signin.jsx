@@ -22,7 +22,7 @@ function SignIn() {
           <label className="mb-2 text-[13px] font-medium text-[#58687e]" htmlFor="signin-email">Email Address</label>
           <div className="flex h-14 w-full items-center gap-3 rounded-lg border border-transparent bg-field px-4 transition-[border-color,box-shadow,background] duration-[180ms] focus-within:border-[#8ab0ff] focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgb(18_96_245_/_9%)]">
             <Mail className="shrink-0 text-blue" size={20} strokeWidth={2.2} aria-hidden="true" />
-            <input className="h-full min-w-0 w-full border-0 bg-transparent p-0 text-[15px] text-[#566278] outline-hidden" id="signin-email" name="email" type="email" autoComplete="username" defaultValue="godsentprojectteam@gmail.com" required />
+            <input className="h-full min-w-0 w-full border-0 bg-transparent p-0 text-[15px] text-[#566278] outline-hidden placeholder:text-[#98a4b6]" id="signin-email" name="email" type="email" autoComplete="username" placeholder="godsentprojectteam@gmail.com" required />
           </div>
 
           <label className="mt-4 mb-2 text-[13px] font-medium text-[#58687e]" htmlFor="signin-password">Password</label>
@@ -37,7 +37,7 @@ function SignIn() {
           <button className="mt-8 min-h-14 w-full cursor-pointer rounded-lg border-0 bg-blue text-[16px] font-bold text-white transition-[background,transform,box-shadow] duration-[180ms] hover:-translate-y-px hover:bg-blue-dark hover:shadow-[0_6px_16px_rgb(18_96_245_/_20%)]" type="submit">Login</button>
         </form>
 
-        <p className="mt-7 mb-0 flex items-center gap-3 text-[14px] text-[#344356] max380:text-[13px]"><Info className="shrink-0 text-[#1546af]" size={18} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" /><span>Forget password <a className="text-blue hover:underline" href="mailto:godsentprojectteam@gmail.com?subject=Password%20help">contact admin</a></span></p>
+        <p className="mt-7 mb-0 flex items-center gap-3 text-[14px] text-[#344356] max380:text-[13px]"><Info className="shrink-0 text-[#1546af]" size={18} fill="currentColor" stroke="white" strokeWidth={2.5} aria-hidden="true" /><span>Forget password <a className="text-blue hover:underline" href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" target="_blank" rel="noopener noreferrer">contact admin</a></span></p>
         {statusMessage && <p className="mt-4 mb-0 text-[14px] text-success" role="status">{statusMessage}</p>}
       </div>
 

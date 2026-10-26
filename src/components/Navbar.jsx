@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Box, Menu, Sparkles, X } from 'lucide-react'
+import godsentLogo from '../assets/Godsent logo.png'
 
 const navLinks = [
   { label: 'Profile', href: '#profile' },
@@ -39,7 +40,9 @@ function Navbar({ currentPath = '#signin', pageTitle }) {
   return (
     <header className={`relative z-[5] mx-auto flex min-h-[120px] w-[min(90%,1280px)] items-center justify-between gap-6 min1100:min-h-[124px] max700:min-h-[112px] max700:w-[89%] max600:min-h-[76px] ${pageTitle ? 'min-h-[120px] w-[min(92%,1280px)] max600:min-h-[112px] max600:w-[92%] max380:min-h-[92px]' : ''}`}>
       <a className="inline-flex shrink-0 items-center gap-2" href="#signin" aria-label="JM home">
-        <span className="grid size-[32px] place-items-center rounded-full bg-blue text-[19px] leading-none text-white max600:size-[32px]" aria-hidden="true"><span className="-rotate-12">✦</span></span>
+        <span className="grid size-[32px] place-items-center rounded-full bg-blue text-white shadow-[0_2px_8px_rgb(18_96_245_/_18%)] max600:size-[32px]" aria-hidden="true">
+          <img src={godsentLogo} alt="" className="size-[19px] object-contain" />
+        </span>
         <span className="font-display text-[22px] font-extrabold leading-none tracking-[-.05em] text-[#25364a]">JM</span>
       </a>
 

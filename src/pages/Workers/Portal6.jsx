@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 import { ArrowDown, BadgePlus, Bell, Check, CloudUpload, FileText, Info, UserRound } from 'lucide-react'
 import { portalStyles as s } from '../../components/portalStyles.js'
+import { readProjectUploads } from '../../utils/projectUploads.js'
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024
-const ACCEPTED_EXTENSIONS = new Set(['pdf', 'docx', 'zip', 'jpg', 'jpeg', 'png'])
 const initialProjects = [
   { id: 'focus-level-learner-3', name: 'Focus Level Learner 3', learners: 3, date: '05-02-2026', status: 'pending' },
   { id: 'jamal-autism', name: 'Jamal Autism', learners: 5, date: '06-04-2026', status: 'pending' },
@@ -11,35 +10,29 @@ const initialProjects = [
 ]
 
 function Portal6() {
-  const fileInputRef = useRef(null)
   const projectNameRef = useRef(null)
+  const [initialUploadState] = useState(() => {
+    try {
+      return { uploads: readProjectUploads(), error: '' }
+    } catch (error) {
+      return { uploads: [], error: error instanceof Error ? error.message : 'Saved project submissions could not be loaded.' }
+    }
+  })
   const [projects, setProjects] = useState(initialProjects)
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [projectUploads] = useState(initialUploadState.uploads)
+  const [uploadStorageError] = useState(initialUploadState.error)
   const [newProjectName, setNewProjectName] = useState('')
   const [assignFormOpen, setAssignFormOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [projectFilter, setProjectFilter] = useState('pending')
   const [notice, setNotice] = useState(null)
-  const pendingCount = projects.filter((project) => project.status === 'pending').length
-  const visibleProjects = projectFilter === 'pending' ? projects.filter((project) => project.status === 'pending') : projects
-
-  function handleFileChange(event) {
-    const file = event.target.files?.[0]
-    if (!file) return
-    const extension = file.name.split('.').pop()?.toLowerCase()
-    if (!extension || !ACCEPTED_EXTENSIONS.has(extension)) {
-      setSelectedFile(null); event.target.value = ''; setNotice({ type: 'error', message: 'Choose a PDF, DOCX, ZIP, JPG, or PNG file.' }); return
-    }
-    if (file.size > MAX_FILE_SIZE) {
-      setSelectedFile(null); event.target.value = ''; setNotice({ type: 'error', message: 'Please choose a file smaller than 100 MB.' }); return
-    }
-    setSelectedFile(file); setNotice({ type: 'success', message: `${file.name} is ready to upload.` })
-  }
-  function handleUpload() {
-    if (!selectedFile) { fileInputRef.current?.click(); return }
-    setNotice({ type: 'success', message: `${selectedFile.name} was staged in this preview. Connect an upload service to submit it.` })
-    setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ''
-  }
+  const submittedProjectNames = new Set(projectUploads.map((upload) => upload.name.trim().toLowerCase()))
+  const projectsWithStatus = projects.map((project) => ({
+    ...project,
+    status: submittedProjectNames.has(project.name.trim().toLowerCase()) ? 'complete' : 'pending',
+  }))
+  const pendingCount = projectsWithStatus.filter((project) => project.status === 'pending').length
+  const visibleProjects = projectFilter === 'pending' ? projectsWithStatus.filter((project) => project.status === 'pending') : projectsWithStatus
   function handleAddProject(event) {
     event.preventDefault()
     const name = newProjectName.trim()
@@ -86,9 +79,10 @@ function Portal6() {
             <button className={s.cancelButton} type="button" onClick={() => { setAssignFormOpen(false); setNewProjectName('') }}>Cancel</button>
           </form>}
           <div className={`${s.uploadBox} max620:mt-[26px] max460:gap-2 max460:px-2`}>
-            <CloudUpload className={s.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong><span className={s.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span></div>
-            <input ref={fileInputRef} className={s.fileInput} type="file" accept=".pdf,.docx,.zip,.jpg,.jpeg,.png" onChange={handleFileChange} aria-label="Choose a completed project file" /><button className={s.chooseFile} type="button" onClick={handleUpload}>{selectedFile ? 'Upload File' : 'Choose File'}</button>
+            <CloudUpload className={s.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>Upload Completed Project</strong><span className={s.uploadHelp}>Add project details and choose a document (Max 100MB)</span></div>
+            <button className={s.chooseFile} type="button" onClick={() => { window.location.hash = '#ucp?returnTo=portal6' }}>Choose File</button>
           </div>
+          {uploadStorageError && <p className={`${s.notice} ${s.errorNotice}`} role="alert">{uploadStorageError}</p>}
           {notice && <p className={`${s.notice} ${notice.type === 'error' ? s.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={18} aria-hidden="true" />}{notice.message}</p>}
           <a className={s.contact} href="mailto:supervisor@godsent.com?subject=Pending%20projects%20support"><Info className={s.contactIcon} size={18} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={s.contactLink}>contact your supervisor</strong></span></a>
         </div>

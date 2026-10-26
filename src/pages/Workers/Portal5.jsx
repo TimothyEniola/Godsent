@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 import { ArrowDown, BadgePlus, Bell, Check, Clock3, CloudUpload, FileText, Info, UserRound } from 'lucide-react'
 import { portalStyles as s } from '../../components/portalStyles.js'
+import { readProjectUploads } from '../../utils/projectUploads.js'
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024
-const ACCEPTED_EXTENSIONS = new Set(['pdf', 'docx', 'zip', 'jpg', 'jpeg', 'png'])
 const initialProjects = [
   { id: 'focus-level-learner-3', name: 'Focus Level Learner 3', learners: 3, date: '05-02-2026', amount: '+86,000', status: 'pending' },
   { id: 'jamal-autism', name: 'Jamal Autism', learners: 5, date: '06-04-2026', amount: '+105,000', status: 'pending' },
@@ -17,35 +16,29 @@ const csvCell = (value) => {
 }
 
 function Portal5() {
-  const fileInputRef = useRef(null)
   const projectNameRef = useRef(null)
+  const [initialUploadState] = useState(() => {
+    try {
+      return { uploads: readProjectUploads(), error: '' }
+    } catch (error) {
+      return { uploads: [], error: error instanceof Error ? error.message : 'Saved project submissions could not be loaded.' }
+    }
+  })
   const [projects, setProjects] = useState(initialProjects)
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [projectUploads] = useState(initialUploadState.uploads)
+  const [uploadStorageError] = useState(initialUploadState.error)
   const [newProjectName, setNewProjectName] = useState('')
   const [assignFormOpen, setAssignFormOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [projectFilter, setProjectFilter] = useState('all')
   const [notice, setNotice] = useState(null)
-  const pendingCount = projects.filter((project) => project.status === 'pending').length
-  const visibleProjects = projectFilter === 'pending' ? projects.filter((project) => project.status === 'pending') : projects
-
-  function handleFileChange(event) {
-    const file = event.target.files?.[0]
-    if (!file) return
-    const extension = file.name.split('.').pop()?.toLowerCase()
-    if (!extension || !ACCEPTED_EXTENSIONS.has(extension)) {
-      setSelectedFile(null); event.target.value = ''; setNotice({ type: 'error', message: 'Choose a PDF, DOCX, ZIP, JPG, or PNG file.' }); return
-    }
-    if (file.size > MAX_FILE_SIZE) {
-      setSelectedFile(null); event.target.value = ''; setNotice({ type: 'error', message: 'Please choose a file smaller than 100 MB.' }); return
-    }
-    setSelectedFile(file); setNotice({ type: 'success', message: `${file.name} is ready to upload.` })
-  }
-  function handleUpload() {
-    if (!selectedFile) { fileInputRef.current?.click(); return }
-    setNotice({ type: 'success', message: `${selectedFile.name} was staged in this preview. Connect an upload service to submit it.` })
-    setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ''
-  }
+  const submittedProjectNames = new Set(projectUploads.map((upload) => upload.name.trim().toLowerCase()))
+  const projectsWithStatus = projects.map((project) => ({
+    ...project,
+    status: submittedProjectNames.has(project.name.trim().toLowerCase()) ? 'complete' : 'pending',
+  }))
+  const pendingCount = projectsWithStatus.filter((project) => project.status === 'pending').length
+  const visibleProjects = projectFilter === 'pending' ? projectsWithStatus.filter((project) => project.status === 'pending') : projectsWithStatus
   function handleAddProject(event) {
     event.preventDefault()
     const name = newProjectName.trim()
@@ -78,18 +71,26 @@ function Portal5() {
       <div className={s.mainGrid}>
         <div className={s.primary}>
           <div className={s.statGrid} aria-label="Project totals">
-            <article className={s.statCard}><FileText className={s.statIcon} size={22} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Assigned projects</span><strong className={s.statValue}>{projects.length}</strong></article>
-            <article className={s.statCard}><FileText className={s.statIcon} size={22} fill="white" aria-hidden="true" /><span className={s.statLabel}>Total Pending projects</span><strong className={s.statValue}>{pendingCount}</strong></article>
+            {[
+              { key: 'all', label: 'Total Assigned projects', value: projects.length },
+              { key: 'pending', label: 'Total Pending projects', value: pendingCount },
+            ].map((item) => (
+              <button className={`${s.statCard} ${projectFilter === item.key ? 'ring-2 ring-[#ff322c]' : ''}`} key={item.key} type="button" aria-pressed={projectFilter === item.key} onClick={() => setFilter(item.key, item.key === 'pending' ? 'Showing pending projects.' : 'Showing all assigned projects.') }>
+                <FileText className={s.statIcon} size={22} fill="white" aria-hidden="true" />
+                <span className={s.statLabel}>{item.label}</span>
+                <strong className={s.statValue}>{item.value}</strong>
+              </button>
+            ))}
           </div>
           <section className={s.projectSection} aria-labelledby="portal5-projects-title">
             <h2 id="portal5-projects-title" className={s.sectionTitle}>{projectFilter === 'pending' ? 'Projects Pending' : 'Projects Assigned'}</h2>
             <div className={s.tableWrap} role="region" aria-label="Assigned projects" tabIndex="0">
-              <table className={s.table}><colgroup><col className="w-[35%]" /><col className="w-[18%]" /><col className="w-[15%]" /><col className="w-[18%]" /><col className="w-[14%]" /></colgroup>
-                <thead><tr><th className={s.tableHead} scope="col">Project Name</th><th className={s.tableHead} scope="col">Learners</th><th className={s.tableHead} scope="col">Date</th><th className={s.tableHead} scope="col"><span className="sr-only">Download summary</span></th><th className={`${s.tableHead} text-right`} scope="col">Amount</th></tr></thead>
+              <table className={s.table}><colgroup><col className="w-[30%]" /><col className="w-[15%]" /><col className="w-[14%]" /><col className="w-[17%]" /><col className="w-[12%]" /><col className="w-[12%]" /></colgroup>
+                <thead><tr><th className={s.tableHead} scope="col">Project Name</th><th className={s.tableHead} scope="col">Learners</th><th className={s.tableHead} scope="col">Date</th><th className={s.tableHead} scope="col"><span className="sr-only">Download summary</span></th><th className={s.tableHead} scope="col">Status</th><th className={`${s.tableHead} text-right`} scope="col">Amount</th></tr></thead>
                 <tbody>{visibleProjects.length ? visibleProjects.map((project) => <tr key={project.id}>
                   <td className={`${s.tableCell} ${s.projectName}`} title={project.name}>{project.name}</td><td className={s.tableCell}>{project.learners} Learners</td><td className={s.tableCell}>{project.date}</td>
-                  <td className={s.tableCell}><button className={s.downloadButton} type="button" onClick={() => handleDownload(project)} aria-label={`Download project summary for ${project.name}`}>Download</button></td><td className={`${s.tableCell} text-right`}>{project.amount}</td>
-                </tr>) : <tr><td className={`${s.tableCell} !text-center !text-[#74839a]`} colSpan="5">No pending projects right now.</td></tr>}</tbody>
+                  <td className={s.tableCell}><button className={s.downloadButton} type="button" onClick={() => handleDownload(project)} aria-label={`Download project summary for ${project.name}`}>Download</button></td><td className={s.tableCell}><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold ${project.status === 'complete' ? 'bg-[#e7f8f0] text-[#16825b]' : 'bg-[#fff6df] text-[#927000]'}`}>{project.status === 'complete' ? 'Submitted' : 'Pending'}</span></td><td className={`${s.tableCell} text-right`}>{project.amount}</td>
+                </tr>) : <tr><td className={`${s.tableCell} !text-center !text-[#74839a]`} colSpan="6">No pending projects right now.</td></tr>}</tbody>
               </table>
             </div>
           </section>
@@ -99,9 +100,10 @@ function Portal5() {
             <button className={s.assignButton} type="submit">Add Project</button>
             <button className={s.cancelButton} type="button" onClick={() => { setAssignFormOpen(false); setNewProjectName('') }}>Cancel</button>
           </form>}
-          <div className={s.uploadBox}><CloudUpload className={s.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong><span className={s.uploadHelp}>Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span></div>
-            <input ref={fileInputRef} className={s.fileInput} type="file" accept=".pdf,.docx,.zip,.jpg,.jpeg,.png" onChange={handleFileChange} aria-label="Choose a completed project file" /><button className={s.chooseFile} type="button" onClick={handleUpload}>{selectedFile ? 'Upload File' : 'Choose File'}</button>
+          <div className={s.uploadBox}><CloudUpload className={s.uploadIcon} size={36} strokeWidth={1.8} aria-hidden="true" /><div className={s.uploadCopy}><strong className={s.uploadTitle}>Upload Completed Project</strong><span className={s.uploadHelp}>Add project details and choose a document (Max 100MB)</span></div>
+            <button className={s.chooseFile} type="button" onClick={() => { window.location.hash = '#ucp?returnTo=portal5' }}>Choose File</button>
           </div>
+          {uploadStorageError && <p className={`${s.notice} ${s.errorNotice}`} role="alert">{uploadStorageError}</p>}
           {notice && <p className={`${s.notice} ${notice.type === 'error' ? s.errorNotice : ''}`} role={notice.type === 'error' ? 'alert' : 'status'}>{notice.type === 'error' ? null : <Check className="shrink-0" size={18} aria-hidden="true" />}{notice.message}</p>}
           <a className={s.contact} href="mailto:supervisor@godsent.com?subject=Assigned%20projects%20support"><Info className={s.contactIcon} size={18} fill="currentColor" stroke="white" aria-hidden="true" /><span>Click here to <strong className={s.contactLink}>contact your supervisor</strong></span></a>
         </div>

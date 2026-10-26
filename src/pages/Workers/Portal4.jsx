@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   ArrowDown,
   Bell,
@@ -9,6 +9,7 @@ import {
   Info,
   UserRound,
 } from 'lucide-react'
+import { deleteProjectUpload, readProjectUploads } from '../../utils/projectUploads.js'
 
 const initialProjects = [
   { id: 'focus-3', name: 'Focus Level Learner 3', learners: 3, date: '25-07-2026' },
@@ -18,68 +19,44 @@ const initialProjects = [
 ]
 
 function Portal4() {
-  const fileInputRef = useRef(null)
-  const projectNameRef = useRef(null)
+  const [initialUploadState] = useState(() => {
+    try {
+      return { projects: readProjectUploads(), error: '' }
+    } catch (error) {
+      return { projects: [], error: error instanceof Error ? error.message : 'Saved project submissions could not be loaded.' }
+    }
+  })
   const [projects, setProjects] = useState(initialProjects)
-  const [assignedProjectTotal, setAssignedProjectTotal] = useState(3)
-  const [uploadedProjectTotal, setUploadedProjectTotal] = useState(4)
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [uploadedProjects, setUploadedProjects] = useState(initialUploadState.projects)
+  const [uploadStorageError, setUploadStorageError] = useState(initialUploadState.error)
   const [selectedProject, setSelectedProject] = useState(null)
-  const [assignFormOpen, setAssignFormOpen] = useState(false)
-  const [newProjectName, setNewProjectName] = useState('')
+  const [projectOverview, setProjectOverview] = useState('uploaded')
   const [notice, setNotice] = useState('')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-
-  function handleFileChange(event) {
-    const file = event.target.files?.[0]
-    if (file && file.size > 100 * 1024 * 1024) {
-      setSelectedFile(null)
-      event.target.value = ''
-      setNotice('Please choose a file smaller than 100 MB.')
-      return
-    }
-    setSelectedFile(file || null)
-    if (file) setNotice(`${file.name} is ready to upload.`)
-  }
-
-  function handleUpload() {
-    if (!selectedFile) {
-      fileInputRef.current?.click()
-      return
-    }
-    setNotice(`${selectedFile.name} was added to your completed project uploads.`)
-    setUploadedProjectTotal((total) => total + 1)
-    setSelectedFile(null)
-    if (fileInputRef.current) fileInputRef.current.value = ''
-  }
-
-  function handleAddProject(event) {
-    event.preventDefault()
-    const name = newProjectName.trim()
-    if (!name) return
-    const project = {
-      id: `project-${Date.now()}`,
-      name,
-      learners: 1,
-      date: new Intl.DateTimeFormat('en-GB').format(new Date()).replaceAll('/', '-'),
-    }
-    setProjects((current) => [project, ...current])
-    setAssignedProjectTotal((total) => total + 1)
-    setNewProjectName('')
-    setAssignFormOpen(false)
-    setNotice(`${name} was added to your projects.`)
-  }
 
   function handleDeleteProject(project) {
     setProjects((current) => current.filter((item) => item.id !== project.id))
     if (selectedProject?.id === project.id) setSelectedProject(null)
     setNotice(`${project.name} was removed from your project list.`)
+    if (projects.length === 1) setProjectOverview('uploaded')
   }
 
-  function openAssignForm() {
-    setAssignFormOpen(true)
-    window.setTimeout(() => projectNameRef.current?.focus(), 0)
+  function handleDeleteUploadedProject(project) {
+    try {
+      setUploadedProjects(deleteProjectUpload(project.id))
+      if (selectedProject?.id === project.id) setSelectedProject(null)
+      setUploadStorageError('')
+      setNotice(`${project.name} was removed from your uploaded projects.`)
+    } catch (error) {
+      setUploadStorageError(error instanceof Error ? error.message : 'The uploaded project could not be removed.')
+    }
   }
+
+  const assignedProjectTotal = projects.length
+  const uploadedProjectTotal = uploadedProjects.length
+  const projectOverviewLabel = projectOverview === 'assigned' ? 'Assigned Projects' : 'Uploaded Projects'
+  const visibleProjects = projectOverview === 'assigned' ? projects : uploadedProjects
+  const visibleProjectCount = visibleProjects.length
 
   return (
     <section className="relative mx-auto mt-[-8px] w-[min(92%,1200px)] flex-1 pb-14 pl-10 text-[#15283f] max760:mt-[-5px] max760:w-[min(90%,640px)] max760:pb-12 max760:pl-6 max460:w-[94%] max460:pl-4" aria-labelledby="portal4-title">
@@ -100,55 +77,49 @@ function Portal4() {
       <div className="grid grid-cols-[minmax(0,1fr)_clamp(230px,24vw,300px)] items-start gap-[clamp(32px,5vw,56px)] max760:grid-cols-1 max760:gap-6 max460:gap-5">
         <div className="min-w-0">
           <div className="mb-7 grid grid-cols-2 gap-[22px] max460:gap-3" aria-label="Project totals">
-            {[assignedProjectTotal, uploadedProjectTotal].map((total, index) => (
-              <article className={`grid h-[92px] min-w-0 grid-cols-[24px_minmax(0,1fr)] grid-rows-[20px_36px] content-center items-center gap-x-[14px] rounded-xl border border-transparent bg-blue px-6 py-2 text-white max460:grid-cols-[20px_minmax(0,1fr)] max460:gap-x-[10px] max460:px-4 ${index === 0 ? 'border-2 border-[#ff322c]' : ''}`} key={index}>
+            {[
+              { key: 'assigned', label: 'Total Assigned projects', total: assignedProjectTotal },
+              { key: 'uploaded', label: 'Total Uploaded projects', total: uploadedProjectTotal },
+            ].map((item) => (
+              <button className={`grid h-[92px] min-w-0 cursor-pointer grid-cols-[24px_minmax(0,1fr)] grid-rows-[20px_36px] content-center items-center gap-x-[14px] rounded-xl border bg-blue px-6 py-2 text-left text-white transition-all duration-[160ms] hover:-translate-y-px hover:shadow-[0_10px_20px_rgb(18_96_245_/_14%)] max460:grid-cols-[20px_minmax(0,1fr)] max460:gap-x-[10px] max460:px-4 ${projectOverview === item.key ? 'border-2 border-[#ff322c]' : 'border border-transparent'}`} key={item.key} type="button" aria-pressed={projectOverview === item.key} onClick={() => setProjectOverview(item.key)}>
                 <FileText className="row-span-2 size-[22px]" size={22} fill="white" stroke="#1260f5" aria-hidden="true" />
-                <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] leading-[1.2] max460:text-[12px]">Total {index === 0 ? 'Assigned' : 'Uploaded'} projects</span>
-                <strong className="font-display text-[30px] font-extrabold leading-none">{total}</strong>
-              </article>
+                <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] leading-[1.2] max460:text-[12px]">{item.label}</span>
+                <strong className="font-display text-[30px] font-extrabold leading-none">{item.total}</strong>
+              </button>
             ))}
           </div>
 
           <section className="min-w-0" aria-labelledby="uploaded-projects-title">
             <div className="mb-4 flex items-center justify-between">
-              <h2 id="uploaded-projects-title" className="m-0 font-display text-[14px] font-extrabold uppercase leading-[1.2] tracking-[.01em] text-[#061f45]">My Uploaded Projects</h2>
-              <span className="text-[13px] text-[#75839a]">{projects.length} projects</span>
+              <h2 id="uploaded-projects-title" className="m-0 font-display text-[14px] font-extrabold uppercase leading-[1.2] tracking-[.01em] text-[#061f45]">{projectOverviewLabel}</h2>
+              <span className="text-[13px] text-[#75839a]">{visibleProjectCount} projects</span>
             </div>
             <div className="w-full overflow-x-auto">
               <table className="w-full min-w-[520px] table-auto border-collapse font-body">
                 <thead><tr><th className="h-[42px] border-b border-line px-[14px] py-0 text-left text-[13px] font-semibold text-[#63768f] first:pl-0.5" scope="col">Project Name</th><th className="h-[42px] border-b border-line px-[14px] py-0 text-left text-[13px] font-semibold text-[#63768f]" scope="col">Learners</th><th className="h-[42px] border-b border-line px-[14px] py-0 text-left text-[13px] font-semibold text-[#63768f]" scope="col">Date</th><th className="h-[42px] border-b border-line px-[14px] py-0 text-left text-[13px] font-semibold text-[#63768f]" scope="col"><span className="sr-only">Project actions</span></th></tr></thead>
                 <tbody>
-                  {projects.map((project) => (
+                  {visibleProjects.length ? visibleProjects.map((project) => (
                     <tr key={project.id} className="transition-colors duration-[140ms] hover:bg-[#f7faff]">
                       <td className="h-[54px] border-b border-[#eef3fb] px-[14px] py-2 text-left text-[14px] whitespace-nowrap first:pl-0.5"><span className="inline-flex max-w-full items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap text-[14px]"><FileText className="shrink-0 text-[#102744]" size={16} fill="currentColor" stroke="white" aria-hidden="true" />{project.name}</span></td>
                       <td className="h-[54px] border-b border-[#eef3fb] px-[14px] py-2 text-left text-[14px] whitespace-nowrap">{project.learners} Learners</td>
                       <td className="h-[54px] border-b border-[#eef3fb] px-[14px] py-2 text-left text-[14px] whitespace-nowrap">{project.date}</td>
-                      <td className="h-[54px] border-b border-[#eef3fb] px-[14px] py-2 text-left text-[14px] whitespace-nowrap"><div className="flex items-center gap-2"><button className="h-[38px] min-w-[92px] cursor-pointer rounded-lg border-0 bg-blue px-4 text-[13px] font-semibold text-white transition-colors duration-[160ms] hover:bg-[#0d50d3]" type="button" onClick={() => setSelectedProject(project)}>View</button><button className="cursor-pointer border-0 bg-transparent py-1 text-[13px] text-[#27364b] hover:text-[#d52638] hover:underline" type="button" onClick={() => handleDeleteProject(project)}>Delete</button></div></td>
+                      <td className="h-[54px] border-b border-[#eef3fb] px-[14px] py-2 text-left text-[14px] whitespace-nowrap"><div className="flex items-center gap-2"><button className="h-[38px] min-w-[72px] cursor-pointer rounded-lg border-0 bg-blue px-4 text-[13px] font-semibold text-white transition-colors duration-[160ms] hover:bg-[#0d50d3]" type="button" onClick={() => setSelectedProject(project)}>View</button><button className="cursor-pointer border-0 bg-transparent py-1 text-[13px] text-[#27364b] hover:text-[#d52638] hover:underline" type="button" onClick={() => projectOverview === 'uploaded' ? handleDeleteUploadedProject(project) : handleDeleteProject(project)}>Delete</button></div></td>
                     </tr>
-                  ))}
+                  )) : <tr><td className="h-[54px] border-b border-[#eef3fb] px-4 py-2 text-center text-[14px] text-[#75839a]" colSpan="4">{projectOverview === 'uploaded' ? 'No projects have been submitted yet.' : 'No assigned projects.'}</td></tr>}
                 </tbody>
               </table>
             </div>
           </section>
 
-          {assignFormOpen && (
-            <form className="mt-4 grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 rounded-xl border border-[#e2eafb] bg-[#fbfcff] p-4 max460:grid-cols-[minmax(0,1fr)_auto]" onSubmit={handleAddProject}>
-              <label className="col-span-full text-[13px] text-[#64758e]" htmlFor="portal4-new-project">New project name</label>
-              <input className="h-11 min-w-0 rounded-lg border border-[#dce5f3] px-4 text-[14px]" id="portal4-new-project" ref={projectNameRef} value={newProjectName} onChange={(event) => setNewProjectName(event.target.value)} placeholder="Enter project name" required />
-              <button className="h-11 cursor-pointer rounded-lg border-0 bg-blue px-5 text-[13px] font-semibold text-white hover:bg-[#0d50d3]" type="submit">Add project</button>
-              <button className="h-11 cursor-pointer rounded-lg border border-[#dce5f3] bg-white px-5 text-[13px] text-[#52647d] max460:col-start-2" type="button" onClick={() => setAssignFormOpen(false)}>Cancel</button>
-            </form>
-          )}
-
           <div className="mt-8 flex min-h-[108px] items-center gap-4 rounded-xl bg-[#f1f6ff] px-6 py-5 text-blue max760:mt-6 max460:gap-3 max460:px-3">
             <CloudUpload className="shrink-0" size={36} strokeWidth={1.8} aria-hidden="true" />
             <div className="grid min-w-0 flex-1 gap-1">
-              <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-bold">{selectedFile ? selectedFile.name : 'Upload Completed Project'}</strong>
-              <span className="whitespace-nowrap text-[12px] text-[#8190a8] max460:whitespace-normal">Supported formats PDF, DOCX, ZIP, JPG, PNG (Max 100MB)</span>
+              <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-bold">Upload Completed Project</strong>
+              <span className="whitespace-nowrap text-[12px] text-[#8190a8] max460:whitespace-normal">Add project details and choose a document (Max 100MB)</span>
             </div>
-            <input ref={fileInputRef} className="sr-only" type="file" accept=".pdf,.doc,.docx,.zip,.jpg,.jpeg,.png" onChange={handleFileChange} aria-label="Choose a completed project file" />
-            <button className="h-[46px] min-w-[120px] cursor-pointer rounded-lg border-0 bg-blue px-5 text-[13px] font-bold text-white hover:bg-[#0d50d3] max460:min-w-[100px] max460:px-3" type="button" onClick={handleUpload}>{selectedFile ? 'Upload File' : 'Choose File'}</button>
+            <button className="h-[46px] min-w-[120px] cursor-pointer rounded-lg border-0 bg-blue px-5 text-[13px] font-bold text-white hover:bg-[#0d50d3] max460:min-w-[100px] max460:px-3" type="button" onClick={() => { window.location.hash = '#ucp?returnTo=project-portal' }}>Choose File</button>
           </div>
+          {uploadStorageError && <p className="mt-3 mb-0 text-[13px] text-[#bb3441]" role="alert">{uploadStorageError}</p>}
 
           {selectedProject && (
             <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-[#dfe8f7] bg-white px-4 py-3" role="status">
@@ -168,8 +139,8 @@ function Portal4() {
             <span><strong className="block text-[13px] font-bold uppercase text-[#1a2c41]">Abimbola</strong><small className="mt-0.5 block text-[11px] uppercase text-[#697c9b]">Supervisor</small></span>
           </div>
           <nav className="mb-6 mt-1 grid gap-1" aria-label="Supervisor actions">
-            <button className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] hover:bg-white hover:text-blue" type="button" onClick={openAssignForm}><BadgePlus className="shrink-0 text-blue" size={20} aria-hidden="true" /><span>Assign New Project</span></button>
-            <button className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] hover:bg-white hover:text-blue" type="button" onClick={() => document.getElementById('uploaded-projects-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}><FileText className="shrink-0 text-blue" size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></button>
+            <div className="flex min-h-11 cursor-default items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] select-none"><BadgePlus className="shrink-0 text-blue" size={20} aria-hidden="true" /><span>Assign New Project</span></div>
+            <div className="flex min-h-11 cursor-default items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] select-none"><FileText className="shrink-0 text-blue" size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></div>
           </nav>
           <div>
             <h3 className="mt-0 mb-[10px] text-[12px] font-semibold uppercase text-[#798ba6]">Supervisor Note</h3>

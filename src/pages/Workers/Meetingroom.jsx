@@ -56,7 +56,7 @@ function Meetingroom() {
 
       <a className="mt-auto inline-flex min-h-12 min-w-[132px] self-end items-center justify-center rounded-lg bg-blue px-6 text-[14px] font-bold text-white transition-[background,transform] duration-[160ms] hover:-translate-y-px hover:bg-blue-dark max560:mt-7 max560:min-h-12" href="#meeting-chat">Chat Room</a>
 
-      <button className="absolute right-[-28px] bottom-5 grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-[#414448] transition-transform duration-[180ms] hover:translate-y-0.5 max700:right-[-7px] max560:right-[-3px] max560:bottom-2" type="button" aria-label="Scroll to the bottom of the meeting information" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
+      <button className="absolute right-[-52px] bottom-[10px] grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-[#414448] transition-transform duration-[180ms] hover:translate-y-0.5 max700:right-[-7px] max560:right-[-3px] max560:bottom-2" type="button" aria-label="Scroll to the bottom of the meeting information" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
         <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>
     </main>
