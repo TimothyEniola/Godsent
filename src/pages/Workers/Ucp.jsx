@@ -150,7 +150,6 @@ function Ucp() {
         </aside>
       </div>
 
-      <a className="mt-6 inline-flex items-center gap-2 text-[13px] text-[#172b44] hover:text-blue" href={returnPath}>Return to project portal</a>
       <button className="absolute right-[-20px] bottom-8 grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-[#414448] transition-transform hover:translate-y-0.5 max620:right-0 max620:bottom-1" type="button" aria-label="Scroll to the bottom of the upload form" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
         <ArrowDown size={28} fill="currentColor" strokeWidth={2.5} aria-hidden="true" />
       </button>

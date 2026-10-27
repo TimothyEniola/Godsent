@@ -81,7 +81,7 @@ function Portal4() {
               { key: 'assigned', label: 'Total Assigned projects', total: assignedProjectTotal },
               { key: 'uploaded', label: 'Total Uploaded projects', total: uploadedProjectTotal },
             ].map((item) => (
-              <button className={`grid h-[92px] min-w-0 cursor-pointer grid-cols-[24px_minmax(0,1fr)] grid-rows-[20px_36px] content-center items-center gap-x-[14px] rounded-xl border bg-blue px-6 py-2 text-left text-white transition-all duration-[160ms] hover:-translate-y-px hover:shadow-[0_10px_20px_rgb(18_96_245_/_14%)] max460:grid-cols-[20px_minmax(0,1fr)] max460:gap-x-[10px] max460:px-4 ${projectOverview === item.key ? 'border-2 border-[#ff322c]' : 'border border-transparent'}`} key={item.key} type="button" aria-pressed={projectOverview === item.key} onClick={() => setProjectOverview(item.key)}>
+              <button className={`grid h-[92px] min-w-0 cursor-pointer grid-cols-[24px_minmax(0,1fr)] grid-rows-[20px_36px] content-center items-center gap-x-[14px] rounded-xl border bg-blue px-6 py-2 text-left text-white transition-all duration-[160ms] hover:-translate-y-px hover:shadow-[0_10px_20px_rgb(18_96_245_/_14%)] max460:grid-cols-[20px_minmax(0,1fr)] max460:gap-x-[10px] max460:px-4 ${projectOverview === item.key ? 'border-2 border-[#ff322c]' : 'border border-transparent'}`} key={item.key} type="button" aria-pressed={projectOverview === item.key} onClick={() => { if (item.key === 'assigned') window.location.hash = '#portal5'; else setProjectOverview(item.key) }}>
                 <FileText className="row-span-2 size-[22px]" size={22} fill="white" stroke="#1260f5" aria-hidden="true" />
                 <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[14px] leading-[1.2] max460:text-[12px]">{item.label}</span>
                 <strong className="font-display text-[30px] font-extrabold leading-none">{item.total}</strong>
@@ -138,10 +138,10 @@ function Portal4() {
             <span className="grid size-[50px] shrink-0 place-items-center rounded-full bg-blue text-white"><UserRound size={22} fill="white" aria-hidden="true" /></span>
             <span><strong className="block text-[13px] font-bold uppercase text-[#1a2c41]">Abimbola</strong><small className="mt-0.5 block text-[11px] uppercase text-[#697c9b]">Supervisor</small></span>
           </div>
-          <nav className="mb-6 mt-1 grid gap-1" aria-label="Supervisor actions">
+          <div className="mb-6 mt-1 grid gap-1" role="group" aria-label="Supervisor actions, display only">
             <div className="flex min-h-11 cursor-default items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] select-none"><BadgePlus className="shrink-0 text-blue" size={20} aria-hidden="true" /><span>Assign New Project</span></div>
             <div className="flex min-h-11 cursor-default items-center gap-3 rounded-lg border-0 bg-transparent px-2 text-left text-[14px] text-[#152b46] select-none"><FileText className="shrink-0 text-blue" size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></div>
-          </nav>
+          </div>
           <div>
             <h3 className="mt-0 mb-[10px] text-[12px] font-semibold uppercase text-[#798ba6]">Supervisor Note</h3>
             <p className="m-0 min-h-[140px] rounded-lg bg-white p-4 text-[13px] leading-[1.6] text-[#607089]">Good Morning Godsent please, submit all pending project tomorrow.</p>

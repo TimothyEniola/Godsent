@@ -127,6 +127,7 @@ function EditProfilePage() {
                   type={type}
                   value={draft[key]}
                   onChange={updateDraft}
+                  onFocus={(event) => event.currentTarget.select()}
                   maxLength={maxLength}
                   required={required}
                 />

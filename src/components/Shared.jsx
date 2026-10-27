@@ -17,11 +17,11 @@ function WorkerSupervisorPanel({ noteTitle = 'Supervisor Note' }) {
           <small className={styles.supervisorRole}>Supervisor</small>
         </span>
       </div>
-      <nav className={styles.workerUploadSupervisorActions} aria-label="Project navigation">
-        <a className={styles.workerUploadSupervisorAction} href="#portal5"><BadgePlus className={styles.supervisorActionIcon} size={20} aria-hidden="true" /><span>Assign New Project</span></a>
-        <a className={styles.workerUploadSupervisorAction} href="#portal5"><FileText className={styles.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></a>
-        <a className={styles.workerUploadSupervisorAction} href="#portal6"><FileText className={styles.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View Pending Projects</span></a>
-      </nav>
+      <div className={styles.workerUploadSupervisorActions} role="group" aria-label="Supervisor actions, display only">
+        <div className={styles.workerUploadSupervisorStaticAction}><BadgePlus className={styles.supervisorActionIcon} size={20} aria-hidden="true" /><span>Assign New Project</span></div>
+        <div className={styles.workerUploadSupervisorStaticAction}><FileText className={styles.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View All Projects</span></div>
+        <div className={styles.workerUploadSupervisorStaticAction}><FileText className={styles.supervisorActionIcon} size={18} fill="currentColor" aria-hidden="true" /><span>View Pending Projects</span></div>
+      </div>
       <section aria-labelledby="worker-upload-note-title">
         <h3 id="worker-upload-note-title" className={styles.noteTitle}>{noteTitle}</h3>
         <div className={`${styles.note} relative`} aria-label="Supervisor note">
