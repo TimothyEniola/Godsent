@@ -82,7 +82,7 @@ export const portalStyles = {
   workerUploadError: 'mt-3 mb-0 text-center text-[13px] leading-[1.4] text-[#bb3441] [overflow-wrap:anywhere]',
   profilePage: 'relative mx-auto mt-[-16px] w-[min(84%,980px)] flex-1 pb-16 text-ink max700:w-[min(86%,760px)] max600:mt-0 max600:w-[90%] max460:w-[94%]',
   profileIntro: 'mb-8 flex flex-col items-center text-center max600:mb-8',
-  profileTitle: 'm-0 font-display text-[34px] font-bold leading-[1.2] tracking-[-.03em] text-[#203247] max460:text-[28px]',
+  profileTitle: 'm-0 font-display text-[34px] font-bold leading-[1.2] tracking-[-.03em] text-black max460:text-[28px]',
   profileAvatarButton: 'mt-5 grid size-[84px] cursor-pointer place-items-center overflow-hidden rounded-full border-0 bg-[#c9d9ff] p-0 text-[#081a31] transition-transform duration-[160ms] hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-blue/50 focus-visible:outline-offset-2',
   profileAvatarImage: 'size-full object-cover',
   profileDetails: 'm-0 grid grid-cols-2 gap-x-[clamp(36px,10vw,88px)] gap-y-[22px] max600:grid-cols-1 max600:gap-y-[18px]',

@@ -92,7 +92,7 @@ function EditProfilePage() {
   return (
     <section className={styles.profilePage} aria-labelledby="edit-profile-title">
       <header className={styles.profileIntro}>
-        <h1 id="edit-profile-title" className={styles.profileTitle}>Edit Profile</h1>
+        <h1 id="edit-profile-title" className={styles.profileTitle}>Edit <span className="text-blue">Profile</span></h1>
         <input
           ref={photoInputRef}
           className="sr-only"

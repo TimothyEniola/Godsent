@@ -54,7 +54,7 @@ function Profile() {
   return (
     <section className={styles.profilePage} aria-labelledby="profile-page-title">
       <header className={styles.profileIntro}>
-        <h1 id="profile-page-title" className={styles.profileTitle}>My Profile</h1>
+        <h1 id="profile-page-title" className={styles.profileTitle}>My <span className="text-blue">Profile</span></h1>
         <input
           ref={photoInputRef}
           className="sr-only"
