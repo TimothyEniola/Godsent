@@ -9,6 +9,10 @@ import Meetingroom from './pages/Workers/Meetingroom.jsx'
 import CompleteOrPendingWorkersProject from './pages/Admin/completeorpendingworkersproject.jsx'
 import WorkersProjectPortal3 from './pages/Admin/workersprojectportal3.jsx'
 import WorkersComplaintNote from './pages/Admin/Workerscomplaintnote.jsx'
+import Adminhomepage from './pages/Admin/Adminhomepage.jsx'
+import Createaccount from './pages/Admin/Createaccount.jsx'
+import Chooseworkers from './pages/Admin/Chooseworkers.jsx'
+import Workersprojectportal from './pages/Admin/workersprojectportal.jsx'
 import EditProfilePage from './pages/Workers/EditProfilePage.jsx'
 import Profile from './pages/Workers/Profile.jsx'
 import PaymentStatus from './pages/Workers/PaymentStatus.jsx'
@@ -27,6 +31,11 @@ function App() {
   }, [])
 
   const normalizedPath = currentPath.toLowerCase().split('?')[0]
+  const isAdminHomeRoute = ['#admin-home', '#admin', '#admin-portal', '#administrator-portal', '#adminhomepage'].includes(normalizedPath)
+  const isCreateAccountRoute = ['#create-account', '#createaccount'].includes(normalizedPath)
+  const isChooseWorkersRoute = ['#choose-workers', '#chooseworkers'].includes(normalizedPath)
+  const isAdminProjectPortalRoute = ['#workers-project-portal', '#workersprojectportal', '#admin-workers-projects'].includes(normalizedPath)
+  const isAdminRoute = isAdminHomeRoute || isCreateAccountRoute || isChooseWorkersRoute || isAdminProjectPortalRoute
   const isPortal4Route = ['#project-portal', '#portal4', '#projects'].includes(normalizedPath)
   const isPortal5Route = normalizedPath === '#portal5'
   const isPortal6Route = normalizedPath === '#portal6'
@@ -44,10 +53,10 @@ function App() {
   const isProjectsRoute = isPortal4Route || isPortal5Route || isPortal6Route || isWorkerProjectsRoute || isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute || isUcpRoute || isPusRoute
 
   return (
-    <main className={`grid min-h-svh justify-items-center items-stretch p-[12px] max600:p-[8px] ${isProjectsRoute ? 'p-2' : ''} ${isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute ? 'bg-canvas' : ''}`}>
-      <div className={`relative flex min-h-[calc(100svh-24px)] w-[min(1440px,100%)] flex-col overflow-hidden rounded-2xl bg-surface max600:min-h-[calc(100svh-16px)] max600:rounded-xl ${isProjectsRoute ? 'min-h-[calc(100svh-16px)]' : ''}`}>
-        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : isProfileRoute || isEditProfileRoute ? '#profile' : currentPath} pageTitle={isWorkerComplaintRoute ? 'Workers Complaint Portal' : isWorkerUploadRoute || isWorkerUploadSuccessRoute ? 'Upload Workers Projects' : undefined} />
-        {isPaymentStatusRoute ? <PaymentStatus /> : isProfileRoute ? <Profile /> : isEditProfileRoute ? <EditProfilePage /> : isWorkerComplaintRoute ? <WorkersComplaintNote /> : isUcpRoute ? <Ucp /> : isPusRoute ? <Pus /> : isWorkerUploadSuccessRoute || isWorkerUploadRoute ? <WorkersProjectPortal3 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
+    <main className={`grid min-h-svh justify-items-center items-stretch ${isAdminRoute ? 'p-0' : isProjectsRoute ? 'p-2' : 'p-[12px] max600:p-[8px]'} ${isWorkerUploadRoute || isWorkerUploadSuccessRoute || isWorkerComplaintRoute ? 'bg-canvas' : ''}`}>
+      <div className={`relative flex flex-col overflow-hidden bg-surface ${isAdminRoute ? 'min-h-svh w-full' : 'min-h-[calc(100svh-24px)] w-[min(1440px,100%)] rounded-2xl max600:min-h-[calc(100svh-16px)] max600:rounded-xl'} ${isProjectsRoute ? 'min-h-[calc(100svh-16px)]' : ''}`}>
+        <Navbar key={currentPath} currentPath={isProjectsRoute ? '#project-portal' : isProfileRoute || isEditProfileRoute ? '#profile' : currentPath} pageTitle={isAdminHomeRoute || isCreateAccountRoute ? 'Administrator Portal' : isChooseWorkersRoute ? 'Choose Workers Account' : isAdminProjectPortalRoute ? 'Workers Project Portal' : isWorkerComplaintRoute ? 'Workers Complaint Portal' : isWorkerUploadRoute || isWorkerUploadSuccessRoute ? 'Upload Workers Projects' : undefined} compact={isAdminRoute} />
+        {isAdminHomeRoute ? <Adminhomepage /> : isChooseWorkersRoute ? <Chooseworkers /> : isCreateAccountRoute ? <Createaccount /> : isAdminProjectPortalRoute ? <Workersprojectportal /> : isPaymentStatusRoute ? <PaymentStatus /> : isProfileRoute ? <Profile /> : isEditProfileRoute ? <EditProfilePage /> : isWorkerComplaintRoute ? <WorkersComplaintNote /> : isUcpRoute ? <Ucp /> : isPusRoute ? <Pus /> : isWorkerUploadSuccessRoute || isWorkerUploadRoute ? <WorkersProjectPortal3 /> : isWorkerProjectsRoute ? <CompleteOrPendingWorkersProject /> : isMeetingRoomRoute ? <Meetingroom /> : isChatRoomRoute ? <ChatRoom /> : isPortal6Route ? <Portal6 /> : isPortal5Route ? <Portal5 /> : isPortal4Route ? <Portal4 /> : <SignIn />}
       </div>
     </main>
   )

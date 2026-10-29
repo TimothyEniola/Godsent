@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowDown, BadgePlus, Bell, CloudUpload, FileText, Info, UserRound } from 'lucide-react'
 import { portalStyles as s } from '../../components/portalStyles.js'
 import { readProjectUploads } from '../../utils/projectUploads.js'
+import { ASSIGNED_PROJECTS_KEY, loadWorkerAssignedProjects } from '../../utils/assignedProjects.js'
 
 const initialProjects = [
   { id: 'focus-level-learner-3', name: 'Focus Level Learner 3', learners: 3, date: '05-02-2026', status: 'pending' },
@@ -17,10 +18,21 @@ function Portal6() {
       return { uploads: [], error: error instanceof Error ? error.message : 'Saved project submissions could not be loaded.' }
     }
   })
-  const [projects] = useState(initialProjects)
+  const [projects, setProjects] = useState(() => loadWorkerAssignedProjects(initialProjects))
   const [projectUploads] = useState(initialUploadState.uploads)
   const [uploadStorageError] = useState(initialUploadState.error)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
+
+  useEffect(() => {
+    const refreshAssignedProjects = (event) => {
+      if (event.key === ASSIGNED_PROJECTS_KEY || event.key === null) {
+        setProjects(loadWorkerAssignedProjects(initialProjects))
+      }
+    }
+
+    window.addEventListener('storage', refreshAssignedProjects)
+    return () => window.removeEventListener('storage', refreshAssignedProjects)
+  }, [])
   const submittedProjectNames = new Set(projectUploads.map((upload) => upload.name.trim().toLowerCase()))
   const projectsWithStatus = projects.map((project) => ({
     ...project,

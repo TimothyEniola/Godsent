@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowDown,
   Bell,
@@ -10,6 +10,7 @@ import {
   UserRound,
 } from 'lucide-react'
 import { deleteProjectUpload, readProjectUploads } from '../../utils/projectUploads.js'
+import { ASSIGNED_PROJECTS_KEY, loadWorkerAssignedProjects } from '../../utils/assignedProjects.js'
 
 const initialProjects = [
   { id: 'focus-3', name: 'Focus Level Learner 3', learners: 3, date: '25-07-2026' },
@@ -19,6 +20,7 @@ const initialProjects = [
 ]
 
 function Portal4() {
+  const [projects, setProjects] = useState(() => loadWorkerAssignedProjects(initialProjects))
   const [initialUploadState] = useState(() => {
     try {
       return { projects: readProjectUploads(), error: '' }
@@ -26,13 +28,23 @@ function Portal4() {
       return { projects: [], error: error instanceof Error ? error.message : 'Saved project submissions could not be loaded.' }
     }
   })
-  const [projects, setProjects] = useState(initialProjects)
   const [uploadedProjects, setUploadedProjects] = useState(initialUploadState.projects)
   const [uploadStorageError, setUploadStorageError] = useState(initialUploadState.error)
   const [selectedProject, setSelectedProject] = useState(null)
   const [projectOverview, setProjectOverview] = useState('uploaded')
   const [notice, setNotice] = useState('')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
+
+  useEffect(() => {
+    const refreshAssignedProjects = (event) => {
+      if (event.key === ASSIGNED_PROJECTS_KEY || event.key === null) {
+        setProjects(loadWorkerAssignedProjects(initialProjects))
+      }
+    }
+
+    window.addEventListener('storage', refreshAssignedProjects)
+    return () => window.removeEventListener('storage', refreshAssignedProjects)
+  }, [])
 
   function handleDeleteProject(project) {
     setProjects((current) => current.filter((item) => item.id !== project.id))

@@ -33,12 +33,12 @@ function AiToolsMenu({ open, onToggle, pageTitle }) {
   )
 }
 
-function Navbar({ currentPath = '#signin', pageTitle }) {
+function Navbar({ currentPath = '#signin', pageTitle, compact = false }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [toolsOpen, setToolsOpen] = useState(false)
 
   return (
-    <header className={`relative z-[5] mx-auto flex min-h-[120px] w-[min(90%,1280px)] items-center justify-between gap-6 min1100:min-h-[124px] max700:min-h-[112px] max700:w-[89%] max600:min-h-[76px] ${pageTitle ? 'min-h-[120px] w-[min(92%,1280px)] max600:min-h-[112px] max600:w-[92%] max380:min-h-[92px]' : ''}`}>
+    <header className={`relative z-[5] mx-auto flex min-h-[120px] w-[min(90%,1280px)] items-center justify-between gap-6 min1100:min-h-[124px] max700:min-h-[112px] max700:w-[89%] max600:min-h-[76px] ${compact ? 'admin-compact-header min-h-[84px] min1100:min-h-[88px] w-[min(92%,1340px)] max700:min-h-[72px] max600:min-h-[64px] max600:w-[92%]' : pageTitle ? 'min-h-[120px] w-[min(92%,1280px)] max600:min-h-[112px] max600:w-[92%] max380:min-h-[92px]' : ''}`}>
       <a className="inline-flex shrink-0 items-center gap-2" href="#signin" aria-label="JM home">
         <span className="grid size-[32px] place-items-center rounded-full bg-blue text-white shadow-[0_2px_8px_rgb(18_96_245_/_18%)] max600:size-[32px]" aria-hidden="true">
           <img src={godsentLogo} alt="" className="size-[19px] object-contain" />
@@ -50,7 +50,7 @@ function Navbar({ currentPath = '#signin', pageTitle }) {
         <>
           <h1 id="worker-upload-title" className="absolute left-1/2 m-0 -translate-x-1/2 whitespace-nowrap font-display text-[30px] font-extrabold leading-[1.12] tracking-[-.05em] text-[#203247] max600:text-[20px] max460:text-[16px] max380:text-[13px]">
             {pageTitle.split(' ').map((word, index) => (
-              <span className={index === 2 ? 'text-blue' : undefined} key={`${word}-${index}`}>{index ? ' ' : ''}{word}</span>
+              <span className={index === 2 || word.toLowerCase() === 'portal' ? 'text-blue' : undefined} key={`${word}-${index}`}>{index ? ' ' : ''}{word}</span>
             ))}
           </h1>
           <AiToolsMenu open={toolsOpen} onToggle={() => setToolsOpen((open) => !open)} pageTitle={pageTitle} />
